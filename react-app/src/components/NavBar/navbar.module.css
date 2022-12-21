@@ -5,7 +5,7 @@
     font-size: 2.5rem;
     align-items: center;
     justify-content: center;
-    margin-right: 6px;
+    margin-right: 1rem;
 }
 
 .navContainer {
@@ -27,12 +27,11 @@
     align-items: center;
     position: relative;
     transition: background-color 0.3s;
+    overflow-x: hidden;
 }
 
 .input {
     padding: 9px 42px 9px 18px;
-    border-top-left-radius: 96px;
-    border-bottom-left-radius: 96px;
     border: none;
     width: 100%;
     font-size: 16px;
@@ -46,8 +45,6 @@
     width: 62px;
     height: 48px;
     padding: 12px 21px 12px 15px;
-    border-top-right-radius: 96px;
-    border-bottom-right-radius: 96px;
     border: none;
     background-image: linear-gradient(#e2e2e2, #e2e2e2);
     background-color: transparent;
@@ -58,6 +55,7 @@
     align-items: center;
     font-size: 1.5rem;
     transition: all 0.1s;
+    box-sizing: border-box;
 }
 
 .submitBtn:hover {
@@ -93,11 +91,110 @@
     right: 65px;
     width: 18px;
     height: 18px;
-    padding: 9px;
+    padding: 1rem;
     font-size: 1.4rem;
     transition: background-color 0.2s;
 }
 
 .cancelBtn:hover {
     background-color: #e2e2e2;
+}
+
+.rightIcons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.icons {
+    font-size: 22px;
+    padding: 12px;
+    border-radius: 24px;
+    height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+
+.icons:hover {
+    background-color: #e2e2e2;
+}
+
+.bubble {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    top: calc(100%);
+    left: auto;
+    background-color: #222222;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.bubble:after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    background-color: inherit;
+    width: 9px;
+    height: 9px;
+    rotate: 45deg;
+    left: auto;
+}
+
+.signInBtn {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 24px;
+    transition: background-color 0.2s;
+}
+
+.signInBtn:hover {
+    background-color: #e2e2e2;
+}
+
+.formContainer {
+    padding: 30px;
+    border-radius: 24px;
+    background-color: white;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    width: 400px;
+    transition: all 0.3s ease;
+}
+
+.formContainerAppear {
+    top: 50%;
+}
+
+.modalContainer {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 98;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modalContainerAppear {
+    opacity: 0.7;
 }

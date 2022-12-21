@@ -1,5 +1,6 @@
 import Logo from "./Logo"
 import SearchBar from "./SearchBar"
+import Icons from "./Icons"
 import styles from './navbar.module.css'
 
 const NavBar = () => {
@@ -7,6 +8,7 @@ const NavBar = () => {
         <nav className={styles.navContainer}>
             <Logo />
             <SearchBar />
+            <Icons />
         </nav>
     )
 }

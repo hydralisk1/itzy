@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import styles from './navbar.module.css'
 
 const SearchBar = () => {
@@ -11,20 +11,14 @@ const SearchBar = () => {
     }
 
     const handleFocus = () => {
-        submitBtn.current.style.backgroundColor = 'black'
-        submitBtn.current.style.color = 'white'
+        submitBtn.current.className = styles.inputFocus
         searchBarContainer.current.style.backgroundColor = 'white'
     }
 
     const handleBlur = () => {
-        submitBtn.current.style.backgroundColor = 'transparent'
-        submitBtn.current.style.color = 'black'
+        submitBtn.current.className = styles.submitBtn
         searchBarContainer.current.style.backgroundColor = 'rgb(226, 226, 226, 0.3)'
     }
-
-    // useEffect(() => {
-    //     if(keyword.length) submitBtn.current.className = `${styles.submitBtn} ${styles.inputFocus}`
-    // }, [keyword])
 
     return (
         <form ref={searchBarContainer} style={{backgroundColor: 'rgb(226, 226, 226, 0.3)'}} className={styles.searchBarContainer} method='GET' action='' onSubmit={handleSubmit}>
