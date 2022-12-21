@@ -13,3 +13,6 @@ class Cart(db.Model):
     qty = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    user = db.relationship('User', back_populates='carts')
+    items = db.relationship('Item', back_populates='carts')

@@ -14,3 +14,5 @@ class Storage(db.Model):
     receiving = db.Column(db.Enum(Receiving), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    items = db.relationship('Item', back_populates='storages')

@@ -18,7 +18,9 @@ class Item(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    carts = db.relationship('Cart', back_populates='item', cascade='all, delete-orphan')
-    likes = db.relationship('Like', back_populates='item', cascade='all, delete-orphan')
-    transactions = db.relationship('Transaction', back_populates='item', cascade='all, delete-orphan')
-    storages = db.relationship('Storage', back_populates='item', cascade='all, delete-orphan')
+    carts = db.relationship('Cart', back_populates='items', cascade='all, delete-orphan')
+    likes = db.relationship('Like', back_populates='items', cascade='all, delete-orphan')
+    transactions = db.relationship('Transaction', back_populates='items')
+    storages = db.relationship('Storage', back_populates='items', cascade='all, delete-orphan')
+    category = db.relationship('Category', back_populates='items')
+    shop = db.relationship('Shop', back_populates='items')

@@ -13,5 +13,5 @@ class Category(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    parent = db.relationship('Category', back_populates='category', cascade='all, delete-orphan')
-    category = db.relationship('Item', back_populates='category')
+    upper_category = db.relationship('Category', remote_side=[id])
+    items = db.relationship('Item', back_populates='category')

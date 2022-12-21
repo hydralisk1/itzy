@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, nullable=False, unique=True)
+    hashed_password = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
     profile_picture = db.Column(db.String)
     gender = db.Column(db.Enum(Gender))
@@ -24,6 +25,7 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
+    shop = db.relationship('Shop', back_populates='user')
     carts = db.relationship('Cart', back_populates='user', cascade='all, delete-orphan')
     likes = db.relationship('Like', back_populates='user', cascade='all, delete-orphan')
     transactions = db.relationship('Transaction', back_populates='user', cascade='all, delete-orphan')
@@ -43,6 +45,6 @@ class User(db.Model, UserMixin):
     def to_dict(self):
         return {
             'id': self.id,
-            'username': self.username,
+            'name': self.name,
             'email': self.email
         }

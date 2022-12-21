@@ -12,5 +12,5 @@ class Shop(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
-    items = db.relationship('Item', back_populates='shop', cascade='all, delete-orphan')
     user = db.relationship('User', back_populates='shop')
+    items = db.relationship('Item', back_populates='shop', cascade='all, delete-orphan')

@@ -31,7 +31,7 @@ const Modal = ({ setIsModalOn }) => {
     return (
         <div ref={modal} className={styles.modalContainer} onMouseDown={closeModal}>
             <div ref={formContainer} className={styles.formContainer} onMouseDown={e => e.stopPropagation()}>
-                {isSignUp ? <SignUp /> : <SignIn setIsSignUp={setIsSignUp} />}
+                {isSignUp ? <SignUp setIsModalOn={setIsModalOn} /> : <SignIn setIsSignUp={setIsSignUp} setIsModalOn={setIsModalOn} />}
             </div>
         </div>
     )

@@ -186,7 +186,7 @@
 .modalContainer {
     width: 100vw;
     height: 100vh;
-    background-color: black;
+    background-color: rgb(0, 0, 0, 0.7);
     position: absolute;
     top: 0;
     left: 0;
@@ -196,5 +196,96 @@
 }
 
 .modalContainerAppear {
-    opacity: 0.7;
+    opacity: 1;
+}
+
+.signInForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.signInTitle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.registerBtn {
+    cursor: pointer;
+    font-size: 13px;
+    border-radius: 24px;
+    padding: 9px 15px;
+    border: 2px solid black;
+    transition: all 0.3s;
+}
+
+.registerBtn:hover {
+    box-shadow: 0px 0px 5px 5px rgba(200, 200, 200, 0.4);
+    transform: scale(1.035);
+}
+
+.inputTag {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.inputContainer {
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    width: 100%;
+    padding: 12px;
+    transition: border-color 0.2s;
+}
+
+.inputContainer:hover {
+    border-color: #777777;
+}
+
+.inputField {
+    outline: none;
+    border: none;
+    width: 100%;
+    background-color: transparent;
+}
+
+.errorField {
+    background-color: rgb(255, 0, 0, 0.3);
+    border-color: rgb(255, 0, 0, 0.5);
+}
+
+.errorField:hover {
+    border-color: rgb(255, 0, 0, 0.6)
+}
+
+.errorMessage {
+    height: 20px;
+    color: red;
+    margin-bottom: 8px;
+}
+
+.submitBtnContainer {
+    width: 100%;
+}
+
+.formSubmitBtn {
+    text-align: center;
+    background-color: black;
+    border-radius: 24px;
+    padding: 1rem;
+    width: 100%;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.formSubmitBtn:hover {
+    transform: scale(1.02);
+    opacity: 0.8;
+}
+
+.terms {
+    color: rgb(89, 89, 89);
+    font-size: 13px;
 }
