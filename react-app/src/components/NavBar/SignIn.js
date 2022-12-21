@@ -23,12 +23,19 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
         if(!emailError.length && !passwordError.length) {
             dispatch(login(email, password))
                 .then(res => {
-                    if(res !== null){
+                    if(!res){
                         setEmailError('Invalid credential')
                         setPasswordError('Invalid credential')
                     }else setIsModalOn(false)
                 })
         }
+    }
+
+    const demoUserLogin = () => {
+        dispatch(login('demo@aa.io', 'password'))
+            .then(res => {
+                if(!res) setIsModalOn(false)
+            })
     }
 
     useEffect(() => {
@@ -78,6 +85,9 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
                 <div className={styles.errorMessage}>{showError && passwordError}</div>
                 <div className={styles.submitBtnContainer}>
                     <button className={styles.formSubmitBtn} type='submit'>Sign in</button>
+                </div>
+                <div className={styles.submitBtnContainer}>
+                    <button className={styles.formSubmitBtn} onClick={demoUserLogin}>Demo User Login</button>
                 </div>
             </form>
             <p className={styles.terms}>

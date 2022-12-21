@@ -131,7 +131,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    top: calc(100%);
+    top: calc(100% + 6px);
     left: auto;
     background-color: #222222;
     color: white;
@@ -177,6 +177,7 @@
     z-index: 99;
     width: 400px;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .formContainerAppear {
@@ -195,6 +196,21 @@
     transition: opacity 0.3s ease;
 }
 
+.closeBtnContainer {
+    position: absolute;
+    background-color: transparent;
+    cursor: pointer;
+    top: 20px;
+    right: -40px;
+    color: white;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .modalContainerAppear {
     opacity: 1;
 }
@@ -202,13 +218,23 @@
 .signInForm {
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .signInTitle {
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
+}
+
+.signUpTitle {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.signUpNote {
+    color: rgb(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
 }
 
 .registerBtn {
@@ -260,12 +286,13 @@
 
 .errorMessage {
     height: 20px;
-    color: red;
+    color: rgb(255, 0, 0, 0.6);
     margin-bottom: 8px;
 }
 
 .submitBtnContainer {
     width: 100%;
+    margin-bottom: 8px;
 }
 
 .formSubmitBtn {
@@ -280,7 +307,7 @@
     transition: all 0.3s;
 }
 
-.formSubmitBtn:hover {
+.formSubmitBtn:hover:enabled {
     transform: scale(1.02);
     opacity: 0.8;
 }
@@ -288,4 +315,51 @@
 .terms {
     color: rgb(89, 89, 89);
     font-size: 13px;
+}
+
+.formSubmitBtn:disabled {
+    background-color: rgb(0,0,0,0.5);
+}
+
+.accountMenuContainer {
+    position: absolute;
+    list-style: none;
+    border-radius: 12px;
+    top: 55px;
+    left: auto;
+    padding: 12px 0;
+    background-color: white;
+    border: 1px solid #ececec;
+    width: 300px;
+}
+
+.accountMenuContainer:after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    background-color: inherit;
+    border-top: 1px solid #ececec;
+    border-left: 1px solid #ececec;
+    width: 9px;
+    height: 9px;
+    rotate: 45deg;
+    left: 50%;
+}
+
+.accountMenu {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    column-gap: 1rem;
+    padding: 8px 1rem;
+    transition: background-color 0.2s;
+}
+
+.accountMenu:hover {
+    background-color: #e2e2e2;
+}
+
+.menuIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

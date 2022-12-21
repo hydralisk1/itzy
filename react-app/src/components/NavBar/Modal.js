@@ -31,6 +31,9 @@ const Modal = ({ setIsModalOn }) => {
     return (
         <div ref={modal} className={styles.modalContainer} onMouseDown={closeModal}>
             <div ref={formContainer} className={styles.formContainer} onMouseDown={e => e.stopPropagation()}>
+                <div className={styles.closeBtnContainer} onMouseDown={closeModal}>
+                    <i style={{fontSize: '24px'}} class="fa-solid fa-xmark"></i>
+                </div>
                 {isSignUp ? <SignUp setIsModalOn={setIsModalOn} /> : <SignIn setIsSignUp={setIsSignUp} setIsModalOn={setIsModalOn} />}
             </div>
         </div>
