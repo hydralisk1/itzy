@@ -1,0 +1,103 @@
+.logo {
+    display: flex;
+    font-family: 'PT Serif Caption', serif;
+    color: rgb(224, 109, 53);
+    font-size: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+}
+
+.navContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1328px;
+    padding: 12px 36px;
+    margin: 0 auto;
+}
+
+.searchBarContainer {
+    width: 100%;
+    height: 48px;
+    border: 2px solid black;
+    border-radius: 96px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.input {
+    padding: 9px 42px 9px 18px;
+    border-top-left-radius: 96px;
+    border-bottom-left-radius: 96px;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    outline: none;
+    background-color: transparent;
+}
+
+.submitBtn {
+    cursor: pointer;
+    display: flex;
+    width: 62px;
+    height: 48px;
+    padding: 12px 21px 12px 15px;
+    border-top-right-radius: 96px;
+    border-bottom-right-radius: 96px;
+    border: none;
+    background-image: linear-gradient(#e2e2e2, #e2e2e2);
+    background-color: transparent;
+    background-size: 0% 0%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    transition: all 0.1s;
+}
+
+.submitBtn:hover {
+    background-image: linear-gradient(#e2e2e2, #e2e2e2);
+    background-size: 100% 100%;
+}
+
+.inputFocus {
+    cursor: pointer;
+    display: flex;
+    width: 62px;
+    height: 48px;
+    padding: 12px 21px 12px 15px;
+    border-top-right-radius: 96px;
+    border-bottom-right-radius: 96px;
+    border: none;
+    background-color: black;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.cancelBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    right: 65px;
+    width: 18px;
+    height: 18px;
+    padding: 9px;
+    font-size: 1.4rem;
+    transition: background-color 0.2s;
+}
+
+.cancelBtn:hover {
+    background-color: #e2e2e2;
+}

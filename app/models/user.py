@@ -1,15 +1,33 @@
-from .db import db
+from .db import db, SCHEMA, environment, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from datetime import datetime
+from ..enums.gender import Gender
 
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
+    if environment == 'production':
+        __table_args__ = {'schema': SCHEMA}
+
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40), nullable=False, unique=True)
-    email = db.Column(db.String(255), nullable=False, unique=True)
-    hashed_password = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String, nullable=False, unique=True)
+    name = db.Column(db.String, nullable=False)
+    profile_picture = db.Column(db.String)
+    gender = db.Column(db.Enum(Gender))
+    city = db.Column(db.String)
+    birthday = db.Column(db.DateTime)
+    about = db.Column(db.Text)
+    shop_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('shops.id')))
+    shipping_address = db.Column(db.String)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    carts = db.relationship('Cart', back_populates='user', cascade='all, delete-orphan')
+    likes = db.relationship('Like', back_populates='user', cascade='all, delete-orphan')
+    transactions = db.relationship('Transaction', back_populates='user', cascade='all, delete-orphan')
+
 
     @property
     def password(self):
