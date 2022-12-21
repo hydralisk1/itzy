@@ -45,7 +45,7 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
             emailField.current.className = emailError.length ? `${styles.inputContainer} ${styles.errorField}` : styles.inputContainer
             passwordField.current.className = passwordError.length ? `${styles.inputContainer} ${styles.errorField}` : styles.inputContainer
         }
-    }, [emailError, passwordError])
+    }, [emailError, passwordError, showError])
 
     return (
         <>
