@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 8fe267abdb07
+Revision ID: 00e020f18335
 Revises: 
-Create Date: 2022-12-22 09:05:35.071896
+Create Date: 2022-12-22 09:49:19.501554
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8fe267abdb07'
+revision = '00e020f18335'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,11 +27,29 @@ def upgrade():
     sa.ForeignKeyConstraint(['parent_id'], ['categories.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('users',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('hashed_password', sa.String(), nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('profile_picture', sa.String(), nullable=True),
+    sa.Column('gender', sa.Enum('female', 'male', 'rather_not_say', name='gender'), nullable=True),
+    sa.Column('city', sa.String(), nullable=True),
+    sa.Column('birthday', sa.DateTime(), nullable=True),
+    sa.Column('about', sa.Text(), nullable=True),
+    sa.Column('shipping_address', sa.String(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email')
+    )
     op.create_table('shops',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('items',
@@ -49,24 +67,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
     sa.ForeignKeyConstraint(['shop_id'], ['shops.id'], ),
     sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('users',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('email', sa.String(), nullable=False),
-    sa.Column('hashed_password', sa.String(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
-    sa.Column('profile_picture', sa.String(), nullable=True),
-    sa.Column('gender', sa.Enum('female', 'male', 'rather_not_say', name='gender'), nullable=True),
-    sa.Column('city', sa.String(), nullable=True),
-    sa.Column('birthday', sa.DateTime(), nullable=True),
-    sa.Column('about', sa.Text(), nullable=True),
-    sa.Column('shop_id', sa.Integer(), nullable=True),
-    sa.Column('shipping_address', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['shop_id'], ['shops.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
     )
     op.create_table('carts',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -120,8 +120,8 @@ def downgrade():
     op.drop_table('storages')
     op.drop_table('likes')
     op.drop_table('carts')
-    op.drop_table('users')
     op.drop_table('items')
     op.drop_table('shops')
+    op.drop_table('users')
     op.drop_table('categories')
     # ### end Alembic commands ###

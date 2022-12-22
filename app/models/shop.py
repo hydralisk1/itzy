@@ -1,4 +1,4 @@
-from .db import db, SCHEMA, environment
+from .db import db, SCHEMA, environment, add_prefix_for_prod
 from datetime import datetime
 
 class Shop(db.Model):
@@ -8,6 +8,7 @@ class Shop(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
     name = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())

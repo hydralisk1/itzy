@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
     city = db.Column(db.String)
     birthday = db.Column(db.DateTime)
     about = db.Column(db.Text)
-    shop_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('shops.id')))
+    # shop_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('shops.id')))
     shipping_address = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())

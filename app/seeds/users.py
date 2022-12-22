@@ -1,5 +1,6 @@
 from app.models import db, User, environment, SCHEMA
-
+import csv
+import os
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
@@ -13,6 +14,20 @@ def seed_users():
     db.session.add(demo)
     db.session.add(marnie)
     db.session.add(bobbie)
+
+    name_duplicate = []
+
+    with open(f'{os.path.dirname(__file__)}/seed.csv', 'r') as readfile:
+        csv_reader = csv.reader(readfile, delimiter=',')
+        next(csv_reader)
+
+        for row in csv_reader:
+            name = row[4]
+            if name not in name_duplicate:
+                email = name.lower() + '@itzy.com'
+                password = 'password'
+                db.session.add(User(name=name, email=email, password=password))
+                name_duplicate.append(name)
 
     db.session.commit()
 
