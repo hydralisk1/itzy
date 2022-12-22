@@ -12,6 +12,7 @@ class Item(db.Model):
     shop_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('shops.id')), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('categories.id')), nullable=False)
     price = db.Column(db.Float, nullable=False)
+    desc = db.Column(db.Text, nullable=False)
     primary_image = db.Column(db.String, nullable=False)
     secondary_image = db.Column(db.String)
     video = db.Column(db.String)
