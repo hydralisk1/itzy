@@ -43,3 +43,20 @@ class Item(db.Model):
         res = [{ 'id':item.id, 'image': item.primary_image, 'price': item.price }  for item in Item.query.filter(Item.id.in_(ids)).all()]
 
         return res
+
+    def get_item(self):
+        # stock = db.session.query(db.func.sum(self.storages.qty))
+        # print(stock)
+
+        return {
+            'name': self.name,
+            # 'stock': self.
+            'shop_name': self.shop.name,
+            'category_1': self.category.upper_category.name,
+            'category_2': self.category.name,
+            'price': self.price,
+            'desc': self.desc,
+            'image_1': self.primary_image,
+            'image_2': self.secondary_image,
+            'vidoe': self.video
+        }

@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import NavBar from './components/NavBar/';
 import MainPage from './components/MainPage';
+import ItemPage from './components/ItemPage';
 // import ProtectedRoute from './components/auth/ProtectedRoute';
 import { authenticate } from './store/session';
 
@@ -25,6 +26,9 @@ function App() {
     <BrowserRouter>
       <NavBar />
       <Switch>
+        <Route path='/items/:itemId'>
+          <ItemPage />
+        </Route>
         <Route path='/' exact={true} >
           <MainPage />
         </Route>

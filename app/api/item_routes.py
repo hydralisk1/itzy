@@ -4,6 +4,14 @@ from app.models import Item
 item_routes = Blueprint('items', __name__)
 
 
+@item_routes.route('/get/<int:item_id>')
+def get_item(item_id):
+    try:
+        item = Item.query.get(item_id)
+        return item.get_item()
+    except:
+        return {'error': 'Something went wrong'}, 500
+
 @item_routes.route('/get')
 def get_items():
     try:

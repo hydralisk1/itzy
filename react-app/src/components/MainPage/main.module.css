@@ -1,5 +1,6 @@
 .mainContainer {
-    max-width: 1328px;
+    max-width: 1400px;
+    padding: 1rem 36px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     /* grid-auto-rows: 60%; */
@@ -12,13 +13,33 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* height: auto; */
     aspect-ratio: auto 4/3;
     object-fit: cover;
     border-radius: 6px;
+    position: relative;
+    transition: box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.item:hover {
+    box-shadow: 0 0 5px 4px rgb(0, 0, 0, 0.2);
+}
+
+.pricetag {
+    position: absolute;
+    bottom: 6px;
+    left: 8px;
+    background-color: white;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 0.5rem;
+    font-family: 'Roboto', sans-serif;
+    border: 1px solid rgb(0, 0, 0, 0.2)
 }
 
 .itemImage {
-    max-width: 100%;
+    max-width: 120%;
+    height: auto;
     object-fit: cover;
 }
