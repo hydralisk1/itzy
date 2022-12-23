@@ -1,6 +1,6 @@
 from .db import db, SCHEMA, environment, add_prefix_for_prod
+from ..enums.receiving import Receiving
 from datetime import datetime
-from random import randint
 
 class Item(db.Model):
     __tablename__ = 'items'
@@ -29,33 +29,18 @@ class Item(db.Model):
 
     @staticmethod
     def get_items():
-        # num_of_items = 10
-
-        # ids = []
-        # min = db.session.query(db.func.min(Item.id)).scalar()
-        # max = db.session.query(db.func.max(Item.id)).scalar()
-
-        # while(len(ids) < 10):
-        #     random_id = randint(min, max)
-        #     if random_id not in ids:
-        #         ids.append(random_id)
-
         res = [{ 'id':item.id, 'image': item.primary_image, 'price': item.price }  for item in Item.query.all()]
 
         return res
 
-    @staticmethod
-    def get_item(item_id):
-        # Item.query(db.func.sum(Item.storages.qty)).get(item_id)
-        item = Item.query.get(item_id)
-
+    def get_item(self):
         return {
-            'name': item.name,
-            # 'stock': self.
-            'shop_name': item.shop.name,
-            'category_1': item.category.upper_category.name,
-            'category_2': item.category.name,
-            'price': item.price,
-            'desc': item.desc,
-            'images': [item.primary_image, item.video, item.secondary_image]
+            'name': self.name,
+            'stock': sum(i.qty if i.receiving == Receiving.receive else -i.qty for i in self.storages),
+            'shop_name': self.shop.name,
+            'category_1': self.category.upper_category.name,
+            'category_2': self.category.name,
+            'price': self.price,
+            'desc': self.desc,
+            'images': [self.primary_image, self.video, self.secondary_image]
         }

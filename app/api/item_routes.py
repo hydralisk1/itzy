@@ -6,8 +6,9 @@ item_routes = Blueprint('items', __name__)
 
 @item_routes.route('/get/<int:item_id>')
 def get_item(item_id):
+    item = Item.query.get(item_id)
     try:
-        return Item.get_item(item_id)
+        return item.get_item()
     except:
         return {'error': 'Something went wrong'}, 500
 

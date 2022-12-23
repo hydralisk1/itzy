@@ -103,8 +103,8 @@
     white-space: pre-wrap;
     background: linear-gradient(to bottom, #222222, #ededed);
     background-clip: text;
-    letter-spacing: 0.5px;
     color: transparent;
+    letter-spacing: 0.5px;
     transition: height 0.3s;
 }
 
@@ -161,4 +161,96 @@
 .arrowDown {
     transform: rotate(0);
     transition: transform 0.3s;
+}
+
+.stock {
+    color: #a61a2e;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.modalContainer {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 1s;
+}
+
+.modalContainerAppear {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.cartModal {
+    max-width: 480px;
+    width: 100%;
+    min-width: 375px;
+    height: 100vh;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    right: -480px;
+    transition: right 1s;
+    padding: 2rem;
+}
+
+.cartModalAppear {
+    right: 0;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.imgHolder {
+    width: 81px;
+    height: 60px;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    /* position: relative; */
+}
+
+.cartImg {
+    width: 100%;
+}
+
+.cartMessage {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.checkMark {
+    position: absolute;
+    top: -10px;
+    left: 68px;
+    color: green;
+    background-color: white;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+}
+
+.keepShoppingBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background-color 0.3s;
+    border-radius: 24px;
+}
+
+.keepShoppingBtn:hover {
+    background-color: #ececec;
 }

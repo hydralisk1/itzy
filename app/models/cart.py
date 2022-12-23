@@ -16,3 +16,16 @@ class Cart(db.Model):
 
     user = db.relationship('User', back_populates='carts')
     items = db.relationship('Item', back_populates='carts')
+
+    @staticmethod
+    def save_items(data, user_id):
+        try:
+            for item_id in data.keys():
+                new_item = Cart(user_id=user_id, item_id=int(item_id), qty=data[item_id])
+                db.session.add(new_item)
+
+            db.session.commit()
+
+            return True
+        except:
+            return False

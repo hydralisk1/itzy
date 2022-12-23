@@ -330,12 +330,13 @@
     background-color: white;
     border: 1px solid #ececec;
     width: 300px;
+    z-index: 99;
 }
 
 .accountMenuContainer:after {
     content: '';
     position: absolute;
-    top: -6px;
+    top: -16px;
     background-color: inherit;
     border-top: 1px solid #ececec;
     border-left: 1px solid #ececec;
