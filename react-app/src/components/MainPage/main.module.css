@@ -1,0 +1,24 @@
+.mainContainer {
+    max-width: 1328px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* grid-auto-rows: 60%; */
+    gap: 1rem;
+    margin: 1rem auto;
+}
+
+.item {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: auto; */
+    aspect-ratio: auto 4/3;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.itemImage {
+    max-width: 100%;
+    object-fit: cover;
+}

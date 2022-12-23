@@ -1,5 +1,6 @@
 from .db import db, SCHEMA, environment, add_prefix_for_prod
 from datetime import datetime
+from random import randint
 
 class Item(db.Model):
     __tablename__ = 'items'
@@ -25,3 +26,20 @@ class Item(db.Model):
     storages = db.relationship('Storage', back_populates='items', cascade='all, delete-orphan')
     category = db.relationship('Category', back_populates='items')
     shop = db.relationship('Shop', back_populates='items')
+
+    @staticmethod
+    def get_items():
+        num_of_items = 10
+
+        ids = []
+        min = db.session.query(db.func.min(Item.id)).scalar()
+        max = db.session.query(db.func.max(Item.id)).scalar()
+
+        while(len(ids) < 10):
+            random_id = randint(min, max)
+            if random_id not in ids:
+                ids.append(random_id)
+
+        res = [{ 'id':item.id, 'image': item.primary_image, 'price': item.price }  for item in Item.query.filter(Item.id.in_(ids)).all()]
+
+        return res

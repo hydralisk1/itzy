@@ -23,7 +23,7 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
         if(!emailError.length && !passwordError.length) {
             dispatch(login(email, password))
                 .then(res => {
-                    if(!res){
+                    if(res.length){
                         setEmailError('Invalid credential')
                         setPasswordError('Invalid credential')
                     }else setIsModalOn(false)

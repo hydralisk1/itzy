@@ -1,3 +1,7 @@
+a {
+    text-decoration: none;
+}
+
 .logo {
     display: flex;
     font-family: 'PT Serif Caption', serif;
@@ -12,7 +16,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1328px;
+    max-width: 1400px;
     padding: 12px 36px;
     margin: 0 auto;
 }
@@ -361,4 +365,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.categoryContainer {
+    width: 100%;
+    border-bottom: 1px solid #ececec;
+    display: flex;
+    justify-content: center;
+}
+
+.categories {
+    max-width: 1328px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.category {
+    font-size: 14px;
+    padding: 1rem 0;
+    color: rgb(34, 34, 34);
+    cursor: pointer;
 }
