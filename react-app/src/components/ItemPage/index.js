@@ -52,7 +52,7 @@ const ItemPage = () => {
                 <div className={styles.descContainer}>
                     <div className={styles.shopName}>{data.shop_name}</div>
                     <div className={styles.name}>{data.name}</div>
-                    <div className={styles.price}>$ {data.price}</div>
+                    <div className={styles.price}>$ {data.price.toFixed(2)}</div>
                     <div className={styles.addBtn}>
                         Add to cart
                     </div>
