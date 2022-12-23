@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Heart from '../Heart'
+import Placeholder from '../Placeholder'
 import styles from './main.module.css'
 
 const MainPage = () => {
@@ -48,7 +49,7 @@ const MainPage = () => {
             }
         </div>
         </>
-        : 'Loading'
+        : <Placeholder />
     )
 }
 
