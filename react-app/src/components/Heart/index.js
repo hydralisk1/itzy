@@ -9,7 +9,9 @@ const Heart = ({ itemId }) => {
     const [isModalOn, setIsModalOn] = useState(false)
 
     useEffect(() => {
-        setTimeout(() => setHeartStyle(`${styles.heart} ${styles.appear}`), 0)
+        const timeoutId = setTimeout(() => setHeartStyle(`${styles.heart} ${styles.appear}`), 0)
+
+        return () => clearTimeout(timeoutId)
     }, [])
 
     const handleHeart = () => {

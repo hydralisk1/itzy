@@ -29,34 +29,33 @@ class Item(db.Model):
 
     @staticmethod
     def get_items():
-        num_of_items = 10
+        # num_of_items = 10
 
-        ids = []
-        min = db.session.query(db.func.min(Item.id)).scalar()
-        max = db.session.query(db.func.max(Item.id)).scalar()
+        # ids = []
+        # min = db.session.query(db.func.min(Item.id)).scalar()
+        # max = db.session.query(db.func.max(Item.id)).scalar()
 
-        while(len(ids) < 10):
-            random_id = randint(min, max)
-            if random_id not in ids:
-                ids.append(random_id)
+        # while(len(ids) < 10):
+        #     random_id = randint(min, max)
+        #     if random_id not in ids:
+        #         ids.append(random_id)
 
-        res = [{ 'id':item.id, 'image': item.primary_image, 'price': item.price }  for item in Item.query.filter(Item.id.in_(ids)).all()]
+        res = [{ 'id':item.id, 'image': item.primary_image, 'price': item.price }  for item in Item.query.all()]
 
         return res
 
-    def get_item(self):
-        # stock = db.session.query(db.func.sum(self.storages.qty))
-        # print(stock)
+    @staticmethod
+    def get_item(item_id):
+        # Item.query(db.func.sum(Item.storages.qty)).get(item_id)
+        item = Item.query.get(item_id)
 
         return {
-            'name': self.name,
+            'name': item.name,
             # 'stock': self.
-            'shop_name': self.shop.name,
-            'category_1': self.category.upper_category.name,
-            'category_2': self.category.name,
-            'price': self.price,
-            'desc': self.desc,
-            'image_1': self.primary_image,
-            'image_2': self.secondary_image,
-            'vidoe': self.video
+            'shop_name': item.shop.name,
+            'category_1': item.category.upper_category.name,
+            'category_2': item.category.name,
+            'price': item.price,
+            'desc': item.desc,
+            'images': [item.primary_image, item.video, item.secondary_image]
         }
