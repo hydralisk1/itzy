@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../../store/session'
+import { loadItems, saveItems } from '../../store/cart'
 import styles from './navbar.module.css'
 
 const SignIn = ({ setIsSignUp, setIsModalOn }) => {
@@ -14,6 +15,7 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
 
     const emailField = useRef(null)
     const passwordField = useRef(null)
+    const submitBtn = useRef(null)
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -23,19 +25,27 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
         if(!emailError.length && !passwordError.length) {
             dispatch(login(email, password))
                 .then(res => {
-                    if(res.length){
+                    if(res){
                         setEmailError('Invalid credential')
                         setPasswordError('Invalid credential')
-                    }else setIsModalOn(false)
+                    }else{
+                        const cartItems = JSON.parse(localStorage.getItem('cart'))
+                        dispatch(loadItems(true))
+                            .then(res => {
+                                if(res && cartItems)
+                                    dispatch(saveItems(cartItems))
+                                        .then(res => {if(res) localStorage.removeItem('cart')})
+                            })
+                    }
                 })
+                .finally(() => setIsModalOn(false))
         }
     }
 
     const demoUserLogin = () => {
-        dispatch(login('demo@aa.io', 'password'))
-            .then(res => {
-                if(!res) setIsModalOn(false)
-            })
+        setEmail('demo@aa.io')
+        setPassword('password')
+        submitBtn.current.click()
     }
 
     useEffect(() => {
@@ -87,7 +97,7 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
                     <button className={styles.formSubmitBtn} type='submit'>Sign in</button>
                 </div>
                 <div className={styles.submitBtnContainer}>
-                    <button className={styles.formSubmitBtn} onClick={demoUserLogin}>Demo User Login</button>
+                    <button ref={submitBtn} className={styles.formSubmitBtn} onClick={demoUserLogin}>Demo User Login</button>
                 </div>
             </form>
             <p className={styles.terms}>

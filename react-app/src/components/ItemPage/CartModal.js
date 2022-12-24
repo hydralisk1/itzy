@@ -1,9 +1,11 @@
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import styles from './item.module.css'
 
 const CartModal = ({ imgSrc, setIsCartModalOn }) => {
     const modal = useRef(null)
     const cart = useRef(null)
+    const history = useHistory()
 
     useEffect(() => {
         document.body.style.overflow = 'hidden'
@@ -30,7 +32,7 @@ const CartModal = ({ imgSrc, setIsCartModalOn }) => {
                     </div>
                     <div className={styles.cartMessage}>1 item added to cart</div>
                 </div>
-                <div style={{marginBottom: '1rem'}} className={styles.addBtn}>View cart & check out</div>
+                <div style={{marginBottom: '1rem'}} className={styles.addBtn} onClick={() => history.push('/cart')}>View cart & check out</div>
                 <div className={styles.keepShoppingBtn} onClick={closeModal}>Keep shopping <i style={{marginLeft: '8px', width: '16px', height:'16px', paddingTop: '2px'}} className="fa-solid fa-arrow-right"></i></div>
             </div>
         </div>

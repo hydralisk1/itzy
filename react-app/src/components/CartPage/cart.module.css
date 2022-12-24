@@ -1,0 +1,116 @@
+.cartContainer {
+    max-width: 1400px;
+    padding: 36px;
+    margin: 0 auto;
+    border-bottom: 1px solid #ececec;
+}
+
+.topLine {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.inYourCart {
+    font-size: 2rem;
+    letter-spacing: 0.5px;
+    color: #222222;
+}
+
+.cartEmpty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.protection {
+    width: 100%;
+    background-color: rgb(218,229,243);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.carbonEmissions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: #222222;
+    margin-top: 2rem;
+}
+
+.keepShoppingBtn {
+    padding: 12px 20px;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.keepShoppingBtn:hover {
+    background-color: #ececec;
+}
+
+.mainContainer {
+    display: grid;
+    grid-template-columns: 67% 1fr;
+    gap: 1rem;
+}
+
+.payment {
+    box-shadow: 0 4px 20px rgb(34 34 34 / 15%);
+    padding: 18px;
+    border-radius: 18px;
+}
+
+.paymentTopLine {
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.donation {
+    display: grid;
+    grid-template-columns: 80% 1fr;
+    padding: 18px;
+}
+
+.donationIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paymentMethod {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.cards {
+    margin-right: 4px;
+}
+
+.options {
+    display: flex;
+    margin: 8px 0;
+}
+
+.radioBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+    font-size: 2rem;
+}

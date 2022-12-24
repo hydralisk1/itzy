@@ -1,7 +1,7 @@
 .logo {
     display: flex;
     font-family: 'PT Serif Caption', serif;
-    color: rgb(224, 109, 53);
+    color: #e06d35;
     font-size: 2.5rem;
     align-items: center;
     justify-content: center;
@@ -118,6 +118,21 @@
     transition: background-color 0.2s;
     position: relative;
     cursor: pointer;
+}
+
+.cartBadge {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    border-radius: 50%;
+    background-color: #e06d35;
+    border: 2px solid white;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .icons:hover {

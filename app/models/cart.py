@@ -19,13 +19,32 @@ class Cart(db.Model):
 
     @staticmethod
     def save_items(data, user_id):
-        try:
-            for item_id in data.keys():
+        for item_id in data.keys():
+            item = Cart.query.filter(Cart.user_id == user_id, Cart.item_id == int(item_id)).first()
+            if not item:
                 new_item = Cart(user_id=user_id, item_id=int(item_id), qty=data[item_id])
                 db.session.add(new_item)
+            else:
+                item.qty += data[item_id]
 
-            db.session.commit()
+        db.session.commit()
 
-            return True
-        except:
-            return False
+    @staticmethod
+    def remove_items(data, user_id):
+        item_ids = [int(i) for i in data.keys()]
+        cart_items = Cart.query.filter(Cart.user_id == user_id, Cart.item_id.in_(item_ids)).all()
+        db.session.delete(cart_items)
+        db.session.commit()
+
+
+    @staticmethod
+    def load_items(user_id):
+        return {i.item_id : i.qty for i in Cart.query.filter_by(user_id = user_id).all()}
+
+    @staticmethod
+    def modify_qty(data, user_id):
+        item_id = list(data.keys())[0]
+        item = Cart.query.filter(Cart.user_id == user_id, Cart.item_id == int(item_id))
+        item.qty = data[item_id]
+
+        db.session.commit()

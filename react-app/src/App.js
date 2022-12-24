@@ -4,8 +4,10 @@ import { useDispatch } from 'react-redux';
 import NavBar from './components/NavBar/';
 import MainPage from './components/MainPage';
 import ItemPage from './components/ItemPage';
+import CartPage from './components/CartPage'
 // import ProtectedRoute from './components/auth/ProtectedRoute';
 import { authenticate } from './store/session';
+import { loadItems } from './store/cart';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -13,8 +15,9 @@ function App() {
 
   useEffect(() => {
     (async() => {
-      await dispatch(authenticate());
-      setLoaded(true);
+      const res = await dispatch(authenticate());
+      await dispatch(loadItems(res))
+      setLoaded(true)
     })();
   }, [dispatch]);
 
@@ -28,6 +31,9 @@ function App() {
       <Switch>
         <Route path='/items/:itemId'>
           <ItemPage />
+        </Route>
+        <Route path='/cart'>
+          <CartPage />
         </Route>
         <Route path='/' exact={true} >
           <MainPage />

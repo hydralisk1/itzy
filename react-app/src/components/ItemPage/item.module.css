@@ -91,6 +91,11 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 2rem;
+    transition: background-color 0.3s;
+}
+
+.addBtn:hover {
+    background-color: #5e5e5e;
 }
 
 .desc {

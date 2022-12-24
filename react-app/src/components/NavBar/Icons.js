@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../../store/session'
+import { loadItems } from '../../store/cart'
+import { useHistory } from 'react-router-dom'
 import Modal from './Modal'
 import styles from './navbar.module.css'
 
 const Icons = () => {
     const user = useSelector(state => state.session.user)
+    const cartItems = useSelector(state => state.cart)
+
     const dispatch = useDispatch()
+    const history = useHistory()
 
     const [isOnLike, setIsOnLike] = useState(false)
     const [isOnBell, setIsOnBell] = useState(false)
@@ -22,8 +27,9 @@ const Icons = () => {
         if(isOpenAccount) setIsOnUser(false)
     }, [isOpenAccount])
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         dispatch(logout())
+        await dispatch(loadItems(false))
     }
 
     return (
@@ -75,7 +81,7 @@ const Icons = () => {
                             </div>
                         </li>
                         <li className={styles.accountMenu}>
-                            <div className={styles.menuIcon}><i style={{fontSize: '16px'}} class="fa-solid fa-arrow-right-to-bracket"></i></div>
+                            <div className={styles.menuIcon}><i style={{fontSize: '16px'}} className="fa-solid fa-arrow-right-to-bracket"></i></div>
                             <div onClick={handleLogout}>Sign Out</div>
                         </li>
                     </ul>
@@ -94,8 +100,10 @@ const Icons = () => {
                 onMouseEnter={() => setIsOnCart(true)}
                 onMouseLeave={() => setIsOnCart(false)}
                 className={styles.icons}
+                onClick={() => history.push('/cart')}
             >
                 {isOnCart && <div className={styles.bubble}>Cart</div>}
+                {!!Object.keys(cartItems).length && <div className={styles.cartBadge}>{Object.keys(cartItems).length}</div>}
                 <i className="fa-solid fa-cart-shopping"></i>
             </div>
         </div>

@@ -22,10 +22,11 @@ export const authenticate = () => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     if (data.errors) {
-      return;
+      return false
     }
 
     dispatch(setUser(data));
+    return true
   }
 }
 
