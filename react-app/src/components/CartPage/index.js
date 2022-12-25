@@ -131,7 +131,7 @@ const CartPage = () => {
                                                     </div>
                                                     <div>
                                                         <div style={{fontWeight: 600, textAlign: 'right'}}>$ {(d.price * d.qty).toFixed(2)}</div>
-                                                        <div style={{color: 'rgba(0, 0, 0, 0.5)', textAlign: 'right', fontSize: '15px'}}>($ {d.price.toFixed(2)} each)</div>
+                                                        <div style={{color: 'rgba(0, 0, 0, 0.5)', textAlign: 'right'}}>{d.qty > 2 && <span style={{fontSize: '15px'}}>($ {d.price.toFixed(2)} each)</span>}</div>
                                                     </div>
                                                 </div>
                                             </div>
