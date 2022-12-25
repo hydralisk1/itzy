@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../../store/session'
 import { loadItems } from '../../store/cart'
 import { useHistory } from 'react-router-dom'
+import useComponentVisible from '../useComponentVisible'
 import Modal from './Modal'
 import styles from './navbar.module.css'
 
@@ -19,13 +20,13 @@ const Icons = () => {
     const [isOnUser, setIsOnUser] = useState(false)
     const [isOnCart, setIsOnCart] = useState(false)
 
-    const [isOpenAccount, setIsOpenAccount] = useState(false)
+    const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
 
     const [isModalOn, setIsModalOn] = useState(false)
 
     useEffect(() => {
-        if(isOpenAccount) setIsOnUser(false)
-    }, [isOpenAccount])
+        if(isComponentVisible) setIsOnUser(false)
+    }, [isComponentVisible])
 
     const handleLogout = async () => {
         dispatch(logout())
@@ -63,16 +64,16 @@ const Icons = () => {
             </div>
             <div
                 onMouseEnter={() => {
-                    if(!isOpenAccount)
+                    if(!isComponentVisible)
                         setIsOnUser(true)
                 }}
                 onMouseLeave={() => setIsOnUser(false)}
-                onClick={() => setIsOpenAccount(!isOpenAccount)}
+                onClick={() => setIsComponentVisible(!isComponentVisible)}
                 className={styles.icons}
             >
                 {isOnUser && <div className={styles.bubble}>Your Account</div>}
-                {isOpenAccount &&
-                    <ul className={styles.accountMenuContainer}>
+                {isComponentVisible &&
+                    <ul ref={ref} className={styles.accountMenuContainer}>
                         <li className={styles.accountMenu}>
                             <div className={styles.menuIcon}><i style={{color: '#808080', borderRadius: '50%', backgroundColor: '#c8c8c8', padding: '6px', width: '28px', height: '28px', textAlign: 'center'}} className="fa-solid fa-user"></i></div>
                             <div>

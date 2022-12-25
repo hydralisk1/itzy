@@ -120,6 +120,7 @@ const CartPage = () => {
                                                         <select
                                                             defaultValue={d.qty}
                                                             onChange={e => modifyItem(d.id, e.target.value)}
+                                                            style={{fontSize: '20px', padding: '0.5rem'}}
                                                         >
                                                             {
                                                                 Array
@@ -128,7 +129,10 @@ const CartPage = () => {
                                                             }
                                                         </select>
                                                     </div>
-                                                    <div style={{fontWeight: 600}}>$ {(d.price * d.qty).toFixed(2)}</div>
+                                                    <div>
+                                                        <div style={{fontWeight: 600, textAlign: 'right'}}>$ {(d.price * d.qty).toFixed(2)}</div>
+                                                        <div style={{color: 'rgba(0, 0, 0, 0.5)', textAlign: 'right', fontSize: '15px'}}>($ {d.price.toFixed(2)} each)</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -197,7 +201,7 @@ const CartPage = () => {
                         </ul>
                         <div className={styles.total}>
                             <div style={{fontWeight: 600, letterSpacing: '0.5px'}}>Item(s) total</div>
-                            <div>${totalPrice.toFixed(2)}</div>
+                            <div style={{fontWeight: 600, letterSpacing: '0.5px', fontSize: '20px'}}>${totalPrice.toFixed(2)}</div>
                         </div>
                         <div className={styles.checkoutBtn}>Proceed to checkout</div>
                     </div>
