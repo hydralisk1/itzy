@@ -14,13 +14,17 @@ const CartModal = ({ imgSrc, setIsCartModalOn }) => {
             modal.current.className = styles.modalContainer + ' ' + styles.modalContainerAppear
             cart.current.className = styles.cartModal + ' ' + styles.cartModalAppear
         }, 0)
+
+        return () => {
+            document.body.style.overflow = ''
+        }
     }, [])
 
     const closeModal = () => {
         modal.current.className = styles.modalContainer
         cart.current.className = styles.cartModal
         setTimeout(() => {
-            document.body.style.overflow = ''
+            // document.body.style.overflow = ''
             setIsCartModalOn(false)
         }, 1000)
     }

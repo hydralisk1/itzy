@@ -1,5 +1,6 @@
 import { useState, useEffect, Children, Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { removeItems, modifyItems } from '../../store/cart'
 import Placeholder from '../Placeholder'
 import styles from './cart.module.css'
@@ -7,7 +8,10 @@ import styles from './cart.module.css'
 const CartPage = () => {
     const cartItems = useSelector(state => state.cart)
     const user = useSelector(state => state.session.user)
+
     const dispatch = useDispatch()
+    const history = useHistory()
+
     const [totalPrice, setTotalPrice] = useState(0)
     const [data, setData] = useState([])
     const [paymentMethod, setPaymentMethod] = useState('cc')
@@ -96,7 +100,7 @@ const CartPage = () => {
         <div className={styles.cartContainer}>
             <div className={styles.topLine}>
                 <div className={styles.inYourCart}>{Object.keys(cartItems).length} items in your cart</div>
-                <div className={styles.keepShoppingBtn}>Keep shopping</div>
+                <div className={styles.keepShoppingBtn} onClick={() => {history.push('/')}}>Keep shopping</div>
             </div>
             {purchaseProtection()}
             <div className={styles.mainContainer}>
