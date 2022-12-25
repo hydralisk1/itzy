@@ -28,7 +28,7 @@ const CartModal = ({ imgSrc, setIsCartModalOn }) => {
                 <div className={styles.info}>
                     <div className={styles.imgHolder}>
                         <div className={styles.checkMark}><i style={{fontSize: '21px'}} className="fa-solid fa-circle-check"></i></div>
-                        <img classNam={styles.cartImg} src={imgSrc} alt='product' />
+                        <img className={styles.cartImg} src={imgSrc} alt='product' />
                     </div>
                     <div className={styles.cartMessage}>1 item added to cart</div>
                 </div>

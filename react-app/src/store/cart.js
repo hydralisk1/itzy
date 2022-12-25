@@ -13,9 +13,9 @@ const setItems = items => ({
     items
 })
 
-const deleteItems = items => ({
+const deleteItems = itemIds => ({
     type: REMOVE_ITEMS_FROM_CART,
-    items
+    itemIds
 })
 
 const modifyQty = item => ({
@@ -69,44 +69,63 @@ export const loadItems = (login) => async dispatch => {
     return res
 }
 
-export const removeItems = (items) => async dispatch => {
-    const method = 'DELETE'
-    const headers = {'Content-Type': 'application/json'}
+export const removeItems = (itemIds, login) => async dispatch => {
+    let res
 
-    const options = {
-        method,
-        headers,
-        body: JSON.stringify(items)
+    if(login){
+        const method = 'DELETE'
+        const headers = {'Content-Type': 'application/json'}
+
+        const options = {
+            method,
+            headers,
+            body: JSON.stringify({ids: itemIds})
+        }
+
+        res = fetch('/api/cart/', options)
+                .then(res => {
+                    if(res.ok) return res.json()
+                    throw new Error()
+                })
+                .catch(() => false)
+    }else{
+        const items = JSON.parse(localStorage.getItem('cart'))
+        itemIds.forEach(k => {delete items[k]})
+        localStorage.setItem('cart', JSON.stringify(items))
+        res = true
     }
 
-    const res = fetch('/api/cart/', options)
-                    .then(res => {
-                        if(res.ok) return res.json()
-                        throw new Error()
-                    })
-                    .catch(() => false)
-
-    if(res) dispatch(deleteItems(items))
+    if(res) dispatch(deleteItems(itemIds))
 
     return res
 }
 
-export const modifyItems = (item) => async dispatch => {
-    const method = 'PUT'
-    const headers = {'Content-Type': 'application/json'}
+export const modifyItems = (item, login) => async dispatch => {
+    let res
 
-    const options = {
-        method,
-        headers,
-        body: JSON.stringify(item)
+    if(login){
+        const method = 'PUT'
+        const headers = {'Content-Type': 'application/json'}
+
+        const options = {
+            method,
+            headers,
+            body: JSON.stringify(item)
+        }
+
+        res = fetch('/api/cart/', options)
+                .then(res => {
+                    if(res.ok) return res.json()
+                    throw new Error()
+                })
+                .catch(() => false)
+    }else{
+        const items = JSON.parse(localStorage.getItem('cart'))
+        const key = Object.keys(item)[0]
+        items[key] = item[key]
+        localStorage.setItem('cart', JSON.stringify(items))
+        res = true
     }
-
-    const res = fetch('/api/cart/', options)
-                    .then(res => {
-                        if(res.ok) return res.json()
-                        throw new Error()
-                    })
-                    .catch(() => false)
 
     if(res) dispatch(modifyQty(item))
 
@@ -130,7 +149,7 @@ export default function reducer(state = initialState, action) {
             return {...action.items}
 
         case REMOVE_ITEMS_FROM_CART:
-            Object.keys(action.items).forEach(k => {delete newItems[k]})
+            action.itemIds.forEach(k => {delete newItems[k]})
             return {...newItems}
 
         case MODIFY_QTY_ITEM:

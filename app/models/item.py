@@ -33,6 +33,22 @@ class Item(db.Model):
 
         return res
 
+    @staticmethod
+    def get_multiple_items(item_ids):
+        items = Item.query.filter(Item.id.in_(item_ids)).all()
+        res = {item.id: {
+            'id': item.id,
+            'name': item.name,
+            'stock': sum(i.qty if i.receiving == Receiving.receive else -i.qty for i in item.storages),
+            'shop_name': item.shop.name,
+            # 'category_1': item.category.upper_category.name,
+            # 'category_2': item.category.name,
+            'price': item.price,
+            'image': item.primary_image
+            } for item in items}
+
+        return res
+
     def get_item(self):
         return {
             'name': self.name,

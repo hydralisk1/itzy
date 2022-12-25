@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app.models import Item
 
 item_routes = Blueprint('items', __name__)
@@ -19,3 +19,15 @@ def get_items():
         return jsonify(data)
     except:
         return {'error': 'something went wrong'}, 500
+
+@item_routes.route('/get', methods=['POST'])
+def get_multiple_items():
+    data = request.json
+    if data.get('itemIds'):
+        try:
+            res = Item.get_multiple_items(data['itemIds'])
+            return res
+        except:
+            return {'error': 'something went wrong'}, 500
+    else:
+        return {'error': 'data doesn\'t exist'}, 404

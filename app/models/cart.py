@@ -30,10 +30,8 @@ class Cart(db.Model):
         db.session.commit()
 
     @staticmethod
-    def remove_items(data, user_id):
-        item_ids = [int(i) for i in data.keys()]
-        cart_items = Cart.query.filter(Cart.user_id == user_id, Cart.item_id.in_(item_ids)).all()
-        db.session.delete(cart_items)
+    def remove_items(item_ids, user_id):
+        Cart.query.filter(Cart.user_id == user_id, Cart.item_id.in_(item_ids)).delete()
         db.session.commit()
 
 
@@ -44,7 +42,7 @@ class Cart(db.Model):
     @staticmethod
     def modify_qty(data, user_id):
         item_id = list(data.keys())[0]
-        item = Cart.query.filter(Cart.user_id == user_id, Cart.item_id == int(item_id))
+        item = Cart.query.filter(Cart.user_id == user_id, Cart.item_id == int(item_id)).first()
         item.qty = data[item_id]
 
         db.session.commit()

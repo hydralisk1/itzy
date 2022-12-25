@@ -26,7 +26,7 @@ def save_items():
 @login_required
 def remove_items():
     try:
-        Cart.remove_items(request.json, current_user.id)
+        Cart.remove_items(request.json.get('ids'), current_user.id)
         return {'message': 'Successfully deleted'}
     except:
         return {'error': 'Something went wrong'}, 500

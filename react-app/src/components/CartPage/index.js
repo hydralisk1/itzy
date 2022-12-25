@@ -1,9 +1,72 @@
-import { useState } from 'react'
+import { useState, useEffect, Children, Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { removeItems, modifyItems } from '../../store/cart'
+import Placeholder from '../Placeholder'
 import styles from './cart.module.css'
 
 const CartPage = () => {
     const cartItems = useSelector(state => state.cart)
+    const user = useSelector(state => state.session.user)
+    const dispatch = useDispatch()
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [data, setData] = useState([])
+    const [paymentMethod, setPaymentMethod] = useState('cc')
+    const [isLoaded, setIsLoaded] = useState(false)
+    const [isError, setIsError] = useState()
+
+    useEffect(() => {
+        const itemIds = Object.keys(cartItems)
+        if(itemIds.length){
+            const method = 'POST'
+            const headers = {'Content-type':'application/json'}
+            const body = JSON.stringify({itemIds})
+
+            const options = {
+                method,
+                headers,
+                body
+            }
+
+            fetch('/api/items/get', options)
+                .then(res => {
+                    if(res.ok) return res.json()
+                    throw new Error()
+                })
+                .then(res => {
+                    const handledData = {}
+
+                    Object.values(res).forEach(d => {
+                        const cartData = {
+                            id: d.id,
+                            name: d.name,
+                            stock: d.stock,
+                            price: d.price,
+                            image: d.image,
+                            qty: cartItems[d.id]
+                        }
+
+                        if(handledData[d.shop_name])
+                            handledData[d.shop_name].push(cartData)
+                        else handledData[d.shop_name] = [cartData]
+                    })
+
+                    setData(handledData)
+                    setTotalPrice(Object.values(handledData).reduce((p, c) => p + c.reduce((p, c) => p + c.price * c.qty, 0), 0))
+                })
+                .catch(() => setIsError(true))
+                .finally(() => setIsLoaded(true))
+        }
+    }, [cartItems])
+
+    const removeItem = async (itemId) => {
+        await dispatch(removeItems([itemId], !!user))
+    }
+
+    const modifyItem = async (itemId, qty) => {
+        const item = {}
+        item[itemId] = qty * 1
+        await dispatch(modifyItems(item, !!user))
+    }
 
     const purchaseProtection = () => {
         return (
@@ -29,7 +92,7 @@ const CartPage = () => {
             {purchaseProtection()}
             <div className={styles.cartEmpty + ' ' + styles.inYourCart}>Your cart is empty.</div>
             {carbonEmissions()}
-        </div>:
+        </div> : isLoaded ? isError ? <div>Something went worng. Please try again</div> :
         <div className={styles.cartContainer}>
             <div className={styles.topLine}>
                 <div className={styles.inYourCart}>{Object.keys(cartItems).length} items in your cart</div>
@@ -37,7 +100,45 @@ const CartPage = () => {
             </div>
             {purchaseProtection()}
             <div className={styles.mainContainer}>
-                <div style={{border: '1px solid black', height: '400px'}}>a</div>
+                <div>
+                    {
+                        Object.keys(data).map(shopName => (
+                            <Fragment key={shopName + shopName} >
+                            <div className={styles.shopName} key={shopName}>{shopName}</div>
+                            {
+                                Children.toArray(
+                                    data[shopName].map(d => (
+                                        <div style={{marginBottom: '1rem', borderBottom: '1px solid #ececec', paddingBottom: '1rem'}}>
+                                            <div className={styles.cartItemContainer}>
+                                                <div className={styles.cartImgContainer}><img className={styles.cartImg} src={d.image} alt={d.name} /></div>
+                                                <div className={styles.cartItemNameContainer}>
+                                                    <div className={styles.cartItemName}>{d.name}</div>
+                                                    <div className={styles.removeBtn} onClick={() => removeItem(d.id)}>Remove</div>
+                                                </div>
+                                                <div className={styles.qtyPrice}>
+                                                    <div>
+                                                        <select
+                                                            defaultValue={d.qty}
+                                                            onChange={e => modifyItem(d.id, e.target.value)}
+                                                        >
+                                                            {
+                                                                Array
+                                                                    .from({length: d.stock}, (_, i) => i+1)
+                                                                    .map(qty => <option value={qty} key={qty}>{qty}</option>)
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div style={{fontWeight: 600}}>$ {(d.price * d.qty).toFixed(2)}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                )
+                            }
+                            </Fragment>
+                        ))
+                    }
+                </div>
                 <div>
                     <div className={styles.payment}>
                         <div className={styles.paymentTopLine}>
@@ -52,10 +153,11 @@ const CartPage = () => {
                                         type='radio'
                                         value='cc'
                                         style={{ width: '32px', height: '32px' }}
-                                        checked
+                                        onChange={e => setPaymentMethod(e.target.value)}
+                                        checked={paymentMethod === 'cc'}
                                     />
                                 </div>
-                                <label for='cc'>
+                                <label htmlFor='cc'>
                                     <span className={styles.cards}><i style={{ fontSize: '2rem' }} className="fa-brands fa-cc-visa"></i></span>
                                     <span className={styles.cards}><i style={{ fontSize: '2rem' }} className="fa-brands fa-cc-mastercard"></i></span>
                                     <span className={styles.cards}><i style={{ fontSize: '2rem' }} className="fa-brands fa-cc-discover"></i></span>
@@ -73,7 +175,7 @@ const CartPage = () => {
                                         disabled
                                     />
                                 </div>
-                                <label for='paypal'>
+                                <label htmlFor='paypal'>
                                     <span className={styles.cards}><i style={{ fontSize: '2rem' }} className="fa-brands fa-cc-paypal"></i></span>
                                 </label>
                             </li>
@@ -88,11 +190,16 @@ const CartPage = () => {
                                         disabled
                                     />
                                 </div>
-                                <label for='apple-pay'>
+                                <label htmlFor='apple-pay'>
                                     <span className={styles.cards}><i style={{ fontSize: '2rem' }} className="fa-brands fa-cc-apple-pay"></i></span>
                                 </label>
                             </li>
                         </ul>
+                        <div className={styles.total}>
+                            <div style={{fontWeight: 600, letterSpacing: '0.5px'}}>Item(s) total</div>
+                            <div>${totalPrice.toFixed(2)}</div>
+                        </div>
+                        <div className={styles.checkoutBtn}>Proceed to checkout</div>
                     </div>
                     <div className={styles.donation}>
                         <div className={styles.donationDesc}>
@@ -105,7 +212,7 @@ const CartPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> : <Placeholder />
     )
 }
 
