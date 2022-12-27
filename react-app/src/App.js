@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import NavBar from './components/NavBar/';
 import MainPage from './components/MainPage';
 import ItemPage from './components/ItemPage';
 import CartPage from './components/CartPage'
+import Purchase from './components/Purchase';
 // import ProtectedRoute from './components/auth/ProtectedRoute';
 import { authenticate } from './store/session';
 import { loadItems } from './store/cart';
@@ -12,6 +13,7 @@ import { loadItems } from './store/cart';
 function App() {
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation()
 
   useEffect(() => {
     (async() => {
@@ -26,11 +28,14 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <NavBar />
+    <>
+      {location.pathname !== '/purchase' && <NavBar />}
       <Switch>
         <Route path='/items/:itemId'>
           <ItemPage />
+        </Route>
+        <Route path='/purchase'>
+          <Purchase />
         </Route>
         <Route path='/cart'>
           <CartPage />
@@ -39,7 +44,7 @@ function App() {
           <MainPage />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </>
   );
 }
 

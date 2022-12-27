@@ -1,0 +1,185 @@
+.navContainer {
+    max-width: 1200px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.logoContainer {
+    display: flex;
+
+}
+
+.secure {
+    display: flex;
+    align-items: center;
+    color: rgb(34, 34, 34, 0.7);
+    font-size: 18px;
+}
+
+.phases {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+}
+
+.line {
+    height: 2px;
+    background-color: #bcbbbb;
+    position: absolute;
+    top: 17px;
+    left: 16%;
+    width: 67%;
+}
+
+.phaseLabel {
+    font-size: 14px;
+    color: #222222;
+}
+
+.phase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+.phasePoint {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #bcbbbb;
+    border: none;
+    margin: 12px;
+}
+
+.currentPhase {
+    width: 28px;
+    height: 28px;
+    background-color: #222222;
+    border: none;
+    border-radius: 50%;
+    position: absolute;
+    top: 4px;
+}
+
+.contentContainer {
+    max-width: 1200px;
+    padding: 12px;
+    margin: 0 auto;
+}
+
+.addressForm {
+    margin: 0 auto;
+    max-width: 640px;
+}
+
+.formTitle {
+    font-size: 44px;
+    margin: 24px 0 30px;
+    font-family: 'PT Serif Caption', serif;
+}
+
+.fieldLabel {
+    font-weight: 600;
+}
+
+.inputFieldContainer {
+    width: 100%;
+    border-radius: 8px;
+    padding: 9px 12px;
+    border: solid 1px #bcbbbb;
+    box-shadow: 0 2px 5px rgb(34 34 34 / 15%);
+    transition: box-shadow 0.3s;
+    margin: 4px 0;
+}
+
+.inputFieldContainer:hover {
+    box-shadow: 0 4px 20px rgb(34 34 34 / 15%);
+    border: 1px solid #222222;
+}
+
+.inputField {
+    /* box-shadow: 0 1px 4px 0 rgb(34 34 34 / 10%) inset; */
+    border: none;
+    width: 100%;
+    outline: none;
+    color: #222222;
+    background-color: transparent;
+}
+
+.fieldLine {
+    margin-bottom: 4px;
+}
+
+.fieldHalfHalf {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.submitBtn {
+    display: flex;
+    padding: 12px;
+    width: 100%;
+    background-color: #222222;
+    color: white;
+    cursor: pointer;
+    border-radius: 24px;
+    justify-content: center;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-top: 2rem;
+    transition: background-color 0.3s;
+    border: none;
+}
+
+.submitBtn:hover {
+    background-color: #595959;
+}
+
+.customSelect {
+    padding: 8px 12px;
+    width: 100%;
+    border-radius:8px;
+    border: solid 1px #bcbbbb;
+    box-shadow: 0 2px 5px rgb(34 34 34 / 15%);
+    outline: none;
+    margin: 5px 0 4px;
+}
+
+.errorMsg {
+    height: 20px;
+    color: rgb(255, 0, 0, 0.6);
+    margin-bottom: 8px;
+}
+
+.required {
+    color: red;
+}
+
+.optional {
+    font-size: 14px;
+    color: rgb(0, 0, 0, 0.5);
+    font-weight: 400;
+}
+
+.errorField {
+    background-color: rgb(255, 0, 0, 0.3);
+    border-color: rgb(255, 0, 0, 0.5);
+}
+
+.errorField:hover {
+    border-color: rgb(255, 0, 0, 0.6)
+}
+
+.expContainer {
+    display: flex;
+}

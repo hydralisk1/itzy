@@ -207,7 +207,7 @@ const CartPage = () => {
                             <div style={{fontWeight: 600, letterSpacing: '0.5px'}}>Item(s) total</div>
                             <div style={{fontWeight: 600, letterSpacing: '0.5px', fontSize: '20px'}}>${totalPrice.toFixed(2)}</div>
                         </div>
-                        <div className={styles.checkoutBtn}>Proceed to checkout</div>
+                        <div className={styles.checkoutBtn} onClick={() => history.push('/purchase')}>Proceed to checkout</div>
                     </div>
                     <div className={styles.donation}>
                         <div className={styles.donationDesc}>
