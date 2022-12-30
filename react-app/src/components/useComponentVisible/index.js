@@ -8,7 +8,7 @@ export default function useComponentVisible(initialIsVisible) {
     let clickHandle = initialIsVisible
 
     const handleClickOutside = (event) => {
-        if(clickRef.current.contains(event.target)) {
+        if(clickRef.current && clickRef.current.contains(event.target)) {
             clickHandle = !clickHandle
             setIsComponentVisible(clickHandle)
         }
