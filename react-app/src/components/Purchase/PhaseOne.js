@@ -1,20 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import styles from './purchase.module.css'
 
 const PhaseOne = ({
     phase, fullName, stAddr, otherAddr, zipCode, city, state,
     setPhase, setFullName, setStAddr, setOtherAddr, setZipCode, setCity, setState
 }) => {
-    const user = useSelector(state => state.session.user)
-    // form values
-    // const [fullName, setFullName] = useState('')
-    // const [stAddr, setStAddr] = useState('')
-    // const [otherAddr, setOtherAddr] = useState('')
-    // const [zipCode, setZipCode] = useState('')
-    // const [city, setCity] = useState('')
-    // const [state, setState] = useState('')
-
     // errors for validation
     const [fullNameErr, setFullNameErr] = useState('')
     const [stAddrErr, setStAddrErr] = useState('')
@@ -101,9 +91,7 @@ const PhaseOne = ({
         setShowError(true)
 
         if(!fullNameErr.length && !stAddrErr.length && !zipCodeErr.length && !cityErr.length && !stateErr.length){
-            const userId = user ? user.id : 0
-
-            const info = JSON.parse(localStorage.getItem(`PurchaseInfo${userId}`))
+            const info = JSON.parse(sessionStorage.getItem('PurchaseInfo'))
 
             info.fullName = fullName
             info.stAddr = stAddr
@@ -113,7 +101,7 @@ const PhaseOne = ({
             info.state = state
             info.phase = phase + 1
 
-            localStorage.setItem(`PurchaseInfo${userId}`, JSON.stringify(info))
+            sessionStorage.setItem('PurchaseInfo', JSON.stringify(info))
             setPhase(phase + 1)
         }
     }
@@ -199,7 +187,8 @@ const PhaseOne = ({
                 <div><label className={styles.fieldLabel} htmlFor='state'>State <span className={styles.required}>*</span></label></div>
                 <select
                     className={!!stateErr.length && showError ? `${styles.customSelect} ${styles.errorField}` : styles.customSelect}
-                    defaultValue=''
+                    value={state}
+                    defaultValue={state}
                     onChange={e => setState(e.target.value)}
                 >
                     <option value='' disabled>Select state</option>

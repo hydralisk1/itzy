@@ -6,7 +6,7 @@ import MainPage from './components/MainPage';
 import ItemPage from './components/ItemPage';
 import CartPage from './components/CartPage'
 import Purchase from './components/Purchase';
-// import ProtectedRoute from './components/auth/ProtectedRoute';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 import { authenticate } from './store/session';
 import { loadItems } from './store/cart';
 
@@ -34,9 +34,9 @@ function App() {
         <Route path='/items/:itemId'>
           <ItemPage />
         </Route>
-        <Route path='/purchase'>
+        <ProtectedRoute path='/purchase'>
           <Purchase />
-        </Route>
+        </ProtectedRoute>
         <Route path='/cart'>
           <CartPage />
         </Route>

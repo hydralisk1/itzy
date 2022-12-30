@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import Nav from './Nav'
 import PhaseOne from './PhaseOne'
 import PhaseTwo from './PhaseTwo'
@@ -7,7 +7,7 @@ import PhaseThree from './PhaseThree'
 import styles from './purchase.module.css'
 
 const Purchase = () => {
-    const user = useSelector(state => state.session.user)
+    const history = useHistory()
 
     const [phase, setPhase] = useState(1)
 
@@ -22,19 +22,10 @@ const Purchase = () => {
     // for payment method phase
     const [nameOnCard, setNameOnCard] = useState('')
     const [cardNum, setCardNum] = useState('')
-    // const [expMonth, setExpMonth] = useState(1)
-    // const [expYear, setExpYear] = useState(new Date().getFullYear())
-
-    // const [name, setName] = useState('')
-    // const [addr, setAddr] = useState('')
-    // const [nameOnCard, setNameOnCard] = useState('')
-    // const [cardNum, setCardNum] = useState('')
-    // const [expDate, setExpDate] = useState('')
-    // const [cvv, setCvv] = useState('')
 
     useEffect(() => {
-        const userId = user ? user.id : 0
-        const savedInfo = JSON.parse(localStorage.getItem(`PurchaseInfo${userId}`))
+        if(!sessionStorage.getItem('purchaseItems')) history.goBack()
+        const savedInfo = JSON.parse(sessionStorage.getItem(`PurchaseInfo`))
 
         if(savedInfo){
             if(savedInfo.fullName) setFullName(savedInfo.fullName)
@@ -47,10 +38,11 @@ const Purchase = () => {
             if(savedInfo.nameOnCard) setNameOnCard(savedInfo.nameOnCard)
             if(savedInfo.cardNum) setCardNum(savedInfo.cardNum)
 
-            if(savedInfo.phase) setPhase(savedInfo.phase)
-        }else localStorage.setItem(`PurchaseInfo${userId}`, JSON.stringify({}))
+            // if(savedInfo.phase) setPhase(savedInfo.phase)
+        }else sessionStorage.setItem(`PurchaseInfo`, JSON.stringify({}))
 
-    }, [])
+        return () => {sessionStorage.removeItem('purchaseItems')}
+    }, [history])
 
     const renderPhase = () => {
         switch(phase){
@@ -84,6 +76,10 @@ const Purchase = () => {
                 return <PhaseThree
                             setPhase={setPhase}
                             phase={phase}
+                            cardNum={cardNum}
+                            nameOnCard={nameOnCard}
+                            fullName={fullName}
+                            address={`${stAddr}${otherAddr.length ? ' '  + otherAddr : ''}, ${city}, ${state} ${zipCode}`}
                         />
             default:
                 return <div>Something went wrong</div>

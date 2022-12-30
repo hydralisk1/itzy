@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Logo from "../NavBar/Logo";
 import styles from './purchase.module.css'
 

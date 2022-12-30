@@ -30,16 +30,16 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
                         setPasswordError('Invalid credential')
                     }else{
                         const cartItems = JSON.parse(localStorage.getItem('cart'))
-                        if(cartItems) {
-                            dispatch(saveItems(cartItems))
-                                .then(res => {if(res) localStorage.removeItem('cart')})
-                        }
-                        // dispatch(loadItems(true))
-                        //     .then(res => {
-                        //         if(res && cartItems)
-                        //             dispatch(saveItems(cartItems))
-                        //                 .then(res => {if(res) localStorage.removeItem('cart')})
-                        //     })
+                        // if(cartItems) {
+                        //     dispatch(saveItems(cartItems))
+                        //         .then(res => {if(res) localStorage.removeItem('cart')})
+                        // }
+                        dispatch(loadItems(true))
+                            .then(res => {
+                                if(res && cartItems)
+                                    dispatch(saveItems(cartItems))
+                                        .then(res => {if(res) localStorage.removeItem('cart')})
+                            })
                     }
                 })
                 .finally(() => setIsModalOn(false))

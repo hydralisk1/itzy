@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { removeItems, modifyItems } from '../../store/cart'
 import Placeholder from '../Placeholder'
+import Modal from '../NavBar/Modal'
 import styles from './cart.module.css'
 
 const CartPage = () => {
@@ -17,6 +18,8 @@ const CartPage = () => {
     const [paymentMethod, setPaymentMethod] = useState('cc')
     const [isLoaded, setIsLoaded] = useState(false)
     const [isError, setIsError] = useState()
+
+    const [isModalOn, setIsModalOn] = useState(false)
 
     useEffect(() => {
         const itemIds = Object.keys(cartItems)
@@ -46,7 +49,7 @@ const CartPage = () => {
                             stock: d.stock,
                             price: d.price,
                             image: d.image,
-                            qty: cartItems[d.id]
+                            qty: cartItems[d.id] <= d.stock ? cartItems[d.id] : d.stock
                         }
 
                         if(handledData[d.shop_name])
@@ -88,6 +91,14 @@ const CartPage = () => {
                 <span>Itzy offsets carbon emissions from every delivery</span>
             </div>
         )
+    }
+
+    const checkout = () => {
+        if(!user) setIsModalOn(true)
+        else{
+            sessionStorage.setItem('purchaseItems', JSON.stringify(data))
+            history.push('/purchase')
+        }
     }
 
     return (
@@ -207,7 +218,8 @@ const CartPage = () => {
                             <div style={{fontWeight: 600, letterSpacing: '0.5px'}}>Item(s) total</div>
                             <div style={{fontWeight: 600, letterSpacing: '0.5px', fontSize: '20px'}}>${totalPrice.toFixed(2)}</div>
                         </div>
-                        <div className={styles.checkoutBtn} onClick={() => history.push('/purchase')}>Proceed to checkout</div>
+                        <div className={styles.checkoutBtn} onClick={checkout}>Proceed to checkout</div>
+                        {isModalOn && <Modal setIsModalOn={setIsModalOn} />}
                     </div>
                     <div className={styles.donation}>
                         <div className={styles.donationDesc}>

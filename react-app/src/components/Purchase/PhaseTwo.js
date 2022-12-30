@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import styles from './purchase.module.css'
 
 const PhaseTwo = ({
     phase, nameOnCard, cardNum,
     setPhase, setNameOnCard, setCardNum
 }) => {
-    const user = useSelector(state => state.session.user)
-    // const [name, setName] = useState('')
-    // const [cardNum, setCardNum] = useState('')
     const [expMonth, setExpMonth] = useState(1)
     const [expYear, setExpYear] = useState(new Date().getFullYear())
     const [cvv, setCvv] = useState('')
@@ -26,14 +22,13 @@ const PhaseTwo = ({
         setShowErr(true)
 
         if(!nameErr.length && !cardNumErr.length && !cvvErr.length && !expErr.length){
-            const userId = user ? user.id : 0
-            const info = JSON.parse(localStorage.getItem(`PurchaseInfo${userId}`))
+            const info = JSON.parse(sessionStorage.getItem('PurchaseInfo'))
 
             info.nameOnCard = nameOnCard
             info.cardNum = cardNum
             info.phase = phase + 1
 
-            localStorage.setItem(`PurchaseInfo${userId}`, JSON.stringify(info))
+            sessionStorage.setItem('PurchaseInfo', JSON.stringify(info))
 
             setPhase(phase + 1)
         }
