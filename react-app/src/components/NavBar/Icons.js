@@ -20,7 +20,7 @@ const Icons = () => {
     const [isOnUser, setIsOnUser] = useState(false)
     const [isOnCart, setIsOnCart] = useState(false)
 
-    const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
+    const { targetRef, clickRef, isComponentVisible } = useComponentVisible(false)
 
     const [isModalOn, setIsModalOn] = useState(false)
 
@@ -62,18 +62,10 @@ const Icons = () => {
                 {isOnShop && <div className={styles.bubble}>Shop Manager</div>}
                 <i className="fa-solid fa-shop"></i>
             </div>
-            <div
-                onMouseEnter={() => {
-                    if(!isComponentVisible)
-                        setIsOnUser(true)
-                }}
-                onMouseLeave={() => setIsOnUser(false)}
-                onClick={() => setIsComponentVisible(!isComponentVisible)}
-                className={styles.icons}
-            >
+            <div className={styles.icons}>
                 {isOnUser && <div className={styles.bubble}>Your Account</div>}
                 {isComponentVisible &&
-                    <ul ref={ref} className={styles.accountMenuContainer}>
+                    <ul ref={targetRef} className={styles.accountMenuContainer} onClick={e => e.stopPropagation()}>
                         <li className={styles.accountMenu}>
                             <div className={styles.menuIcon}><i style={{color: '#808080', borderRadius: '50%', backgroundColor: '#c8c8c8', padding: '6px', width: '28px', height: '28px', textAlign: 'center'}} className="fa-solid fa-user"></i></div>
                             <div>
@@ -87,8 +79,18 @@ const Icons = () => {
                         </li>
                     </ul>
                 }
-                <i style={{color: '#808080', borderRadius: '50%', backgroundColor: '#c8c8c8', padding: '6px', width: '28px', height: '28px', textAlign: 'center'}} className="fa-solid fa-user"></i>
-                <i style={{color: '#c8c8c8', fontSize: '16px', marginLeft: '8px'}} className="fa-solid fa-caret-down"></i>
+                <div
+                    ref={clickRef}
+                    onMouseEnter={() => {
+                        if(!isComponentVisible)
+                            setIsOnUser(true)
+                    }}
+                    onMouseLeave={() => setIsOnUser(false)}
+                    style={{display: 'flex', alignItems: 'center'}}
+                >
+                    <i style={{color: '#808080', borderRadius: '50%', backgroundColor: '#c8c8c8', padding: '6px', width: '28px', height: '28px', textAlign: 'center'}} className="fa-solid fa-user"></i>
+                    <i style={{color: '#c8c8c8', fontSize: '16px', marginLeft: '8px'}} className="fa-solid fa-caret-down"></i>
+                </div>
             </div></>:
             <div
                 className={styles.signInBtn}
