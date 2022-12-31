@@ -8,10 +8,14 @@ def seed_shops():
         csv_reader = csv.reader(readfile, delimiter=',')
         next(csv_reader)
 
+        shop_duplicated = []
+
         for row in csv_reader:
             name = row[4]
-            user_id = User.query.filter_by(name = name).first().id
-            db.session.add(Shop(name=name, user_id=user_id))
+            if name not in shop_duplicated:
+                user_id = User.query.filter_by(name = name).first().id
+                db.session.add(Shop(name=name, user_id=user_id))
+                shop_duplicated.append(name)
 
     db.session.commit()
 

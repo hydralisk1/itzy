@@ -57,6 +57,7 @@ const Icons = () => {
             <div
                 onMouseEnter={() => setIsOnShop(true)}
                 onMouseLeave={() => setIsOnShop(false)}
+                onClick={() => history.push('/shop')}
                 className={styles.icons}
             >
                 {isOnShop && <div className={styles.bubble}>Shop Manager</div>}
