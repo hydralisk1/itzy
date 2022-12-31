@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function useComponentVisible(initialIsVisible) {
     const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible);
-    const targetRef = useRef(null);
     const clickRef = useRef(null)
 
     let clickHandle = initialIsVisible
@@ -12,9 +11,11 @@ export default function useComponentVisible(initialIsVisible) {
             clickHandle = !clickHandle
             setIsComponentVisible(clickHandle)
         }
-        else if (targetRef.current && !targetRef.current.contains(event.target)) {
-            clickHandle = false
-            setIsComponentVisible(false);
+        else{
+            setTimeout(() => {
+                clickHandle = false
+                setIsComponentVisible(false);
+            },0)
         }
     };
 
@@ -25,5 +26,5 @@ export default function useComponentVisible(initialIsVisible) {
         };
     }, []);
 
-    return { targetRef, clickRef, isComponentVisible, setIsComponentVisible };
+    return { clickRef, isComponentVisible };
 }

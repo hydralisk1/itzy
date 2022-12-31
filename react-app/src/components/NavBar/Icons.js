@@ -20,7 +20,7 @@ const Icons = () => {
     const [isOnUser, setIsOnUser] = useState(false)
     const [isOnCart, setIsOnCart] = useState(false)
 
-    const { targetRef, clickRef, isComponentVisible } = useComponentVisible(false)
+    const { clickRef, isComponentVisible } = useComponentVisible(false)
 
     const [isModalOn, setIsModalOn] = useState(false)
 
@@ -66,7 +66,7 @@ const Icons = () => {
             <div className={styles.icons}>
                 {isOnUser && <div className={styles.bubble}>Your Account</div>}
                 {isComponentVisible &&
-                    <ul ref={targetRef} className={styles.accountMenuContainer} onClick={e => e.stopPropagation()}>
+                    <ul className={styles.accountMenuContainer} onClick={e => e.stopPropagation()}>
                         <li className={styles.accountMenu}>
                             <div className={styles.menuIcon}><i style={{color: '#808080', borderRadius: '50%', backgroundColor: '#c8c8c8', padding: '6px', width: '28px', height: '28px', textAlign: 'center'}} className="fa-solid fa-user"></i></div>
                             <div>

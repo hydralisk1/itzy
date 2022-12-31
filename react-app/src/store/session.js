@@ -1,6 +1,7 @@
 // constants
 const SET_USER = 'session/SET_USER';
 const REMOVE_USER = 'session/REMOVE_USER';
+const CREATE_SHOP = 'session/CREATE_SHOP'
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -9,6 +10,11 @@ const setUser = (user) => ({
 
 const removeUser = () => ({
   type: REMOVE_USER,
+})
+
+const setShop = (shopId) => ({
+  type: CREATE_SHOP,
+  shopId
 })
 
 const initialState = { user: null };
@@ -28,6 +34,28 @@ export const authenticate = () => async (dispatch) => {
     dispatch(setUser(data));
     return true
   }
+}
+
+export const createShop = (name) => async dispatch => {
+  const method = 'POST'
+  const headers = {'Content-Type': 'application/json'}
+  const body = JSON.stringify({name})
+
+  const options = {
+    method,
+    headers,
+    body
+  }
+
+  let duplicate = false
+
+  const res = await fetch('/api/shop/', options)
+  if(res.ok){
+    const result = await res.json()
+    dispatch(setShop(result.id))
+    return 'success'
+  }else if(res.status === 409) return 'duplicate'
+  else return 'something went wrong'
 }
 
 export const login = (email, password) => async (dispatch) => {
@@ -104,6 +132,8 @@ export default function reducer(state = initialState, action) {
       return { user: action.payload }
     case REMOVE_USER:
       return { user: null }
+    case CREATE_SHOP:
+      return { user: { ...state.user, shop: action.shopId } }
     default:
       return state;
   }

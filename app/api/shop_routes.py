@@ -14,7 +14,7 @@ def create_shop():
         res = Shop.create_shop(name, user_id)
 
         if res:
-            return {'message': 'successfully created'}, 201
+            return {'id': res}, 201
         else:
             return {'error': 'shop name duplicated'}, 409
     except:

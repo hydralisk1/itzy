@@ -1,44 +1,34 @@
 import { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { createShop } from '../../store/session'
+
 import styles from './shop.module.css'
 import orderStyles from '../Purchase/purchase.module.css'
 
 const CreateShop = () => {
-    const history = useHistory()
+    const dispatch = useDispatch()
+
     const [name, setName] = useState('')
     const [lengthError, setLengthError] = useState(false)
     const [letterError, setLetterError] = useState(false)
-    const [isDuplicated, setIsDuplicated] = useState(false)
+    const [isDuplicate, setIsDuplicate] = useState(false)
 
     const handleName = e => {
         if(e.target.value.length <= 20 && /^[a-zA-Z0-9]*$/.test(e.target.value)) setName(e.target.value)
     }
 
-    const handleSubmit = () => {
-        if(!lengthError && !letterError){
-            const method = 'POST'
-            const headers = {'Content-Type': 'application/json'}
-            const body = JSON.stringify({name})
-
-            const options = {
-                method,
-                headers,
-                body
-            }
-
-            fetch('/api/shop/', options)
-                .then(res => {
-                    if(res.ok) history.push('/shop')
-                    else if(res.status === 409) setIsDuplicated(true)
-                    else throw new Error()
-                })
-                .catch(err => console.log(err))
+    const handleSubmit = async () => {
+        if(!lengthError && !letterError) {
+            const res = await dispatch(createShop(name))
+            if(res === 'duplicate') setIsDuplicate(true)
         }
     }
 
     useEffect(() => {
         setLengthError(name.length < 4)
         setLetterError(!(/^[a-zA-Z0-9]+$/.test(name)))
+
+        setIsDuplicate(false)
     }, [name])
 
     return (<>
@@ -74,7 +64,7 @@ const CreateShop = () => {
                     }
                     No special characters, spaces, or accented letters
                 </div>
-                {isDuplicated && <div>Duplicated</div>}
+                {isDuplicate && <div className={styles.duplicate}>Duplicate shop name. Please try another shop name.</div>}
             </div>
         </div>
         <div className={styles.submitBtnContainer}>

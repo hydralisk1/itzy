@@ -21,7 +21,12 @@ class Shop(db.Model):
         if Shop.query.filter(db.func.lower(Shop.name) == name.lower()).first():
             return False
 
-        db.session.add(Shop(name=name, user_id=user_id))
+        new_shop = Shop(name=name, user_id=user_id)
+
+        db.session.add(new_shop)
         db.session.commit()
 
-        return True
+        db.session.refresh(new_shop)
+        print(new_shop)
+
+        return new_shop.id
