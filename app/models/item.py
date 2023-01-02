@@ -29,13 +29,21 @@ class Item(db.Model):
 
     @staticmethod
     def get_items():
-        res = [{ 'id':item.id, 'image': item.primary_image, 'price': item.price }  for item in Item.query.all()]
+        res = []
+
+        for item in Item.query.all():
+            stock = sum(i.qty if i.receiving == Receiving.receive else -i.qty for i in item.storages)
+            if stock > 0:
+                res.append({ 'id':item.id, 'image': item.primary_image, 'price': item.price })
+        # res = [{ 'id':item.id, 'image': item.primary_image, 'price': item.price }  for item in Item.query.all()]
 
         return res
 
     @staticmethod
     def get_multiple_items(item_ids):
         items = Item.query.filter(Item.id.in_(item_ids)).all()
+        res = {}
+
         res = {item.id: {
             'id': item.id,
             'name': item.name,

@@ -17,10 +17,10 @@ const CreateShop = () => {
         if(e.target.value.length <= 20 && /^[a-zA-Z0-9]*$/.test(e.target.value)) setName(e.target.value)
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         if(!lengthError && !letterError) {
-            const res = await dispatch(createShop(name))
-            if(res === 'duplicate') setIsDuplicate(true)
+            dispatch(createShop(name))
+                .then(res => {if(res === 'duplicate') setIsDuplicate(true)})
         }
     }
 

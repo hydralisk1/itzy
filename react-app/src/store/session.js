@@ -47,8 +47,6 @@ export const createShop = (name) => async dispatch => {
     body
   }
 
-  let duplicate = false
-
   const res = await fetch('/api/shop/', options)
   if(res.ok){
     const result = await res.json()

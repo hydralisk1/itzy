@@ -96,7 +96,12 @@ const CartPage = () => {
     const checkout = () => {
         if(!user) setIsModalOn(true)
         else{
-            sessionStorage.setItem('purchaseItems', JSON.stringify(data))
+            const purchaseItems = {}
+            Object.keys(data).forEach(shopName => {
+                const items = data[shopName].filter(item => item.qty > 0)
+                if(items.length) purchaseItems[shopName] = items
+            })
+            sessionStorage.setItem('purchaseItems', JSON.stringify(purchaseItems))
             history.push('/purchase')
         }
     }
@@ -131,6 +136,7 @@ const CartPage = () => {
                                                     <div className={styles.removeBtn} onClick={() => removeItem(d.id)}>Remove</div>
                                                 </div>
                                                 <div className={styles.qtyPrice}>
+                                                {d.stock > 0 ? <>
                                                     <div>
                                                         <select
                                                             defaultValue={d.qty}
@@ -147,7 +153,7 @@ const CartPage = () => {
                                                     <div style={{width: '60%'}}>
                                                         <div style={{fontWeight: 600, textAlign: 'right'}}>$ {(d.price * d.qty).toFixed(2)}</div>
                                                         <div style={{color: 'rgba(0, 0, 0, 0.5)', textAlign: 'right'}}>{d.qty >= 2 && <span style={{fontSize: '15px'}}>($ {d.price.toFixed(2)} each)</span>}</div>
-                                                    </div>
+                                                    </div></> : 'Out of Stock'}
                                                 </div>
                                             </div>
                                         </div>
@@ -218,7 +224,7 @@ const CartPage = () => {
                             <div style={{fontWeight: 600, letterSpacing: '0.5px'}}>Item(s) total</div>
                             <div style={{fontWeight: 600, letterSpacing: '0.5px', fontSize: '20px'}}>${totalPrice.toFixed(2)}</div>
                         </div>
-                        <div className={styles.checkoutBtn} onClick={checkout}>Proceed to checkout</div>
+                        <button className={styles.checkoutBtn} disabled={totalPrice === 0} onClick={checkout}>Proceed to checkout</button>
                         {isModalOn && <Modal setIsModalOn={setIsModalOn} />}
                     </div>
                     <div className={styles.donation}>

@@ -1,4 +1,5 @@
 from .db import db, SCHEMA, environment, add_prefix_for_prod
+from .storage import Storage
 from datetime import datetime
 
 class Transaction(db.Model):
@@ -19,10 +20,14 @@ class Transaction(db.Model):
     items = db.relationship('Item', back_populates='transactions')
 
     @staticmethod
-    def order(user_id, orders):
+    def order(user_id, items, address):
         try:
-            for item in orders.get('items'):
-                db.session.add(Transaction(user_id=user_id, item_id=item['id'], qty=item['qty'], shipping_address=orders['address']))
+            if not len(items):
+                raise Exception('No data passed in')
+
+            for item in items:
+                db.session.add(Transaction(user_id=user_id, item_id=item['id'], qty=item['qty'], shipping_address=address))
+                db.session.add(Storage(item_id=item['id'], qty=item['qty'], receiving='release'))
 
             db.session.commit()
             return True

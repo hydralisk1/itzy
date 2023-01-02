@@ -83,6 +83,7 @@
 
 .addBtn {
     border-radius: 24px;
+    width: 100%;
     color: white;
     background-color: black;
     cursor: pointer;
@@ -94,7 +95,7 @@
     transition: background-color 0.3s;
 }
 
-.addBtn:hover {
+.addBtn:hover, .addBtn:disabled {
     background-color: #5e5e5e;
 }
 

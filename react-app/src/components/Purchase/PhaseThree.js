@@ -69,8 +69,10 @@ const PhaseThree = ({setPhase, cardNum, nameOnCard, fullName, address}) => {
     const handleCheckout = () => {
         const method = 'POST'
         const headers = {'Content-type': 'application/json'}
-        const orderItems = Object.values(items).reduce((p, c) => [...p, ...c], [])
+        const orderItems = Object.values(items).reduce((p, c) => [...p, ...c], []).map(item => ({id: item.id, qty: item.qty}))
         const body = JSON.stringify({items: orderItems, address})
+
+        console.log(orderItems)
 
         const options = {
             method,
@@ -82,11 +84,12 @@ const PhaseThree = ({setPhase, cardNum, nameOnCard, fullName, address}) => {
             .then(async res => {
                 if(res.ok) {
                     await dispatch(removeItems(orderItems.map(item => item.id), true))
+                    sessionStorage.removeItem('PurchaseInfo')
                     history.push('/')
                 }
                 else throw new Error()
             })
-            .catch()
+            .catch(err => console.log(err))
 
     }
 

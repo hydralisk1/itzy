@@ -79,12 +79,12 @@ const ItemPage = () => {
                 </div>
                 <div className={styles.descContainer}>
                     <div className={styles.shopName}>{data.shop_name}</div>
-                    {/* <div className={styles.stock}>In {data.stock}{data.stock > 20 && '+'} carts</div> */}
+                    <div className={styles.stock}>{data.stock <= 0 && 'Out of stock'}</div>
                     <div className={styles.name}>{data.name}</div>
                     <div className={styles.price}>$ {data.price.toFixed(2)}</div>
-                    <div className={styles.addBtn} onClick={addToCart}>
+                    <button className={styles.addBtn} disabled={data.stock === 0} onClick={addToCart}>
                         Add to cart
-                    </div>
+                    </button>
                     <div className={styles.descBtn} onClick={() => setShowDesc(!showDesc)}>
                         <span style={{fontWeight: 600}}>Description</span><span className={showDesc ? styles.arrowUp : styles.arrowDown}><i className="fa-solid fa-angle-down"></i></span>
                     </div>

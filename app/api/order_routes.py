@@ -1,18 +1,32 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
 from app.models import Transaction
+from app.forms import OrderForm
 
 order_routes = Blueprint('orders', __name__)
+
+def validation_errors_to_error_messages(validation_errors):
+    """
+    Simple function that turns the WTForms validation errors into a simple list
+    """
+    errorMessages = []
+    for field in validation_errors:
+        for error in validation_errors[field]:
+            errorMessages.append(f'{field} : {error}')
+    return errorMessages
 
 
 @order_routes.route('/', methods=['POST'])
 @login_required
 def order():
-    orders = request.json
+    form = OrderForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    res = Transaction.order(current_user.id, orders)
+    if form.validate_on_submit():
+        res = Transaction.order(current_user.id, form.data['items'], form.data['address'])
+        if res:
+            return {'message': 'order successfully placed'}, 201
+        else:
+            return {'error': 'something went wrong'}, 500
 
-    if res:
-        return {'message': 'order successfully placed'}, 201
-
-    return {'error': 'something went wrong'}, 500
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
