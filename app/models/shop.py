@@ -9,7 +9,7 @@ class Shop(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), unique=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False, unique=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 
@@ -27,6 +27,5 @@ class Shop(db.Model):
         db.session.commit()
 
         db.session.refresh(new_shop)
-        print(new_shop)
 
         return new_shop.id

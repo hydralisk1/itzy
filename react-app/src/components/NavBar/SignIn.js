@@ -23,26 +23,25 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
         setShowError(true)
 
         if(!emailError.length && !passwordError.length) {
+
             dispatch(login(email, password))
                 .then(res => {
-                    if(res){
-                        setEmailError('Invalid credential')
-                        setPasswordError('Invalid credential')
-                    }else{
+                    console.log(res)
+                    if(res === null){
+                        console.log(1)
                         const cartItems = JSON.parse(localStorage.getItem('cart'))
-                        // if(cartItems) {
-                        //     dispatch(saveItems(cartItems))
-                        //         .then(res => {if(res) localStorage.removeItem('cart')})
-                        // }
                         dispatch(loadItems(true))
                             .then(res => {
                                 if(res && cartItems)
                                     dispatch(saveItems(cartItems))
                                         .then(res => {if(res) localStorage.removeItem('cart')})
                             })
+                            .then(() => setIsModalOn(false))
+                    }else{
+                        setEmailError('Invalid credential')
+                        setPasswordError('Invalid credential')
                     }
                 })
-                .finally(() => setIsModalOn(false))
         }
     }
 

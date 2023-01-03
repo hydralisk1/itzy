@@ -28,7 +28,7 @@ class Item(db.Model):
     shop = db.relationship('Shop', back_populates='items')
 
     @staticmethod
-    def get_items():
+    def get_all_items():
         res = []
 
         for item in Item.query.all():
@@ -39,6 +39,9 @@ class Item(db.Model):
 
         return res
 
+    def get_stock(self):
+        return sum(i.qty if i.receiving == Receiving.receive else -i.qty for i in self.storages)
+
     @staticmethod
     def get_multiple_items(item_ids):
         items = Item.query.filter(Item.id.in_(item_ids)).all()
@@ -47,7 +50,7 @@ class Item(db.Model):
         res = {item.id: {
             'id': item.id,
             'name': item.name,
-            'stock': sum(i.qty if i.receiving == Receiving.receive else -i.qty for i in item.storages),
+            'stock': item.get_stock(),
             'shop_name': item.shop.name,
             # 'category_1': item.category.upper_category.name,
             # 'category_2': item.category.name,
@@ -59,6 +62,7 @@ class Item(db.Model):
 
     def get_item(self):
         return {
+            'id': self.id,
             'name': self.name,
             'stock': sum(i.qty if i.receiving == Receiving.receive else -i.qty for i in self.storages),
             'shop_name': self.shop.name,

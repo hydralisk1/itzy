@@ -34,31 +34,22 @@ export const saveItems = (items) => async dispatch => {
         body: JSON.stringify(items)
     }
 
-    const res = fetch('/api/cart/', options)
-                    .then(res => {
-                        if(res.ok) return true
-                        throw new Error()
-                    })
-                    .catch(() => false)
+    const response = await fetch('/api/cart/', options)
 
-    if(res) dispatch(saveItemsStore(items))
+    if(response.ok) {
+        dispatch(saveItemsStore(items))
+        return true
+    }
 
-    return res
+    return false
 }
 
 export const loadItems = (login) => async dispatch => {
     let res
     if(login){
-        res = fetch('/api/cart/')
-                .then(res => {
-                    if(res.ok) return res.json()
-                    throw new Error()
-                })
-                .then(res => {
-                    dispatch(setItems(res))
-                    return true
-                })
-                .catch(() => false)
+        const response = await fetch('/api/cart/')
+        res = response.ok
+        if(res) dispatch(setItems(await response.json()))
     }else{
         res = true
 

@@ -141,12 +141,15 @@ const CartPage = () => {
                                                         <select
                                                             defaultValue={d.qty}
                                                             onChange={e => modifyItem(d.id, e.target.value)}
-                                                            style={{fontSize: '20px', padding: '0.5rem'}}
+                                                            // className={styles.qtySelect}
+                                                            style={{fontSize: '20px', padding: '8px'}}
                                                         >
                                                             {
                                                                 Array
                                                                     .from({length: d.stock}, (_, i) => i+1)
-                                                                    .map(qty => <option value={qty} key={qty}>{qty}</option>)
+                                                                    .map(qty => <option value={qty} key={qty}>
+                                                                        {qty}
+                                                                    </option>)
                                                             }
                                                         </select>
                                                     </div>
