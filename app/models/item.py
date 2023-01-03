@@ -66,7 +66,7 @@ class Item(db.Model):
             'name': self.name,
             'stock': sum(i.qty if i.receiving == Receiving.receive else -i.qty for i in self.storages),
             'shop_name': self.shop.name,
-            'category_1': self.category.upper_category.name,
+            'category_1': self.category.upper_category.name if self.category.upper_category else None,
             'category_2': self.category.name,
             'price': self.price,
             'desc': self.desc,

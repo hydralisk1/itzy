@@ -99,7 +99,8 @@ def get_items():
     try:
         data = Item.get_all_items()
         return jsonify(data)
-    except:
+    except Exception as e:
+        print(e)
         return {'error': 'something went wrong'}, 500
 
 @item_routes.route('/get', methods=['POST'])
