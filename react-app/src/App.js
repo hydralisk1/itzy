@@ -10,6 +10,7 @@ import Shop from './components/Shop';
 import Favorite from './components/Favorite';
 import Category from './components/Category';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import SearchItems from './components/SearchItems';
 import { authenticate } from './store/session';
 import { loadItems } from './store/cart';
 
@@ -34,6 +35,9 @@ function App() {
     <>
       {location.pathname !== '/purchase' && <NavBar />}
       <Switch>
+        <Route path='/items/search/:keyword'>
+          <SearchItems />
+        </Route>
         <Route path='/items/:itemId'>
           <ItemPage />
         </Route>

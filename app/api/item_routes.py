@@ -84,7 +84,15 @@ def modify_item(item_id):
     except:
         return {'error': 'something went wrong'}, 500
 
+@item_routes.route('/search/<keyword>')
+def search_items(keyword):
+    items = Item.query.filter(Item.name.ilike(f'%{keyword}%')).limit(10)
+    return {item.id: item.name for item in items}
 
+@item_routes.route('/search-all/<keyword>')
+def search_all_items(keyword):
+    items = Item.query.filter(Item.name.ilike(f'%{keyword}%')).all()
+    return {item.id: item.get_item() for item in items}
 
 @item_routes.route('/get/<int:item_id>')
 def get_item(item_id):
