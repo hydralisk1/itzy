@@ -33,7 +33,7 @@ const Heart = ({ itemId }) => {
     return (
         <>
             <div className={heartStyle} onClick={handleHeart}>
-                {user.likes[itemId] ? <i style={{color: 'red'}} className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}
+                {(!!user && user.likes[itemId]) ? <i style={{color: 'red'}} className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}
             </div>
             {isModalOn && <Modal setIsModalOn={setIsModalOn} />}
             {isMessageOn && <Message setIsMessageOn={setIsMessageOn} isError={true} message='Something went wrong' />}

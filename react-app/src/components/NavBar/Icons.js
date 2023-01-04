@@ -15,7 +15,7 @@ const Icons = () => {
     const history = useHistory()
 
     const [isOnLike, setIsOnLike] = useState(false)
-    const [isOnBell, setIsOnBell] = useState(false)
+    // const [isOnBell, setIsOnBell] = useState(false)
     const [isOnShop, setIsOnShop] = useState(false)
     const [isOnUser, setIsOnUser] = useState(false)
     const [isOnCart, setIsOnCart] = useState(false)
@@ -46,7 +46,7 @@ const Icons = () => {
                 {isOnLike && <div className={styles.bubble}>Favorites</div>}
                 <i className="fa-regular fa-heart"></i>
             </div>
-            <div
+            {/* <div
                 onMouseEnter={() => setIsOnBell(true)}
                 onMouseLeave={() => setIsOnBell(false)}
                 className={styles.icons}
@@ -54,7 +54,7 @@ const Icons = () => {
                 {isOnBell && <div className={styles.bubble}>Updates</div>}
                 <i className="fa-regular fa-bell"></i>
                 <i style={{color: '#c8c8c8', fontSize: '16px', marginLeft: '8px'}} className="fa-solid fa-caret-down"></i>
-            </div>
+            </div> */}
             <div
                 onMouseEnter={() => setIsOnShop(true)}
                 onMouseLeave={() => setIsOnShop(false)}

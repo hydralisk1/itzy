@@ -8,6 +8,7 @@ import CartPage from './components/CartPage'
 import Purchase from './components/Purchase';
 import Shop from './components/Shop';
 import Favorite from './components/Favorite';
+import Category from './components/Category';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import { authenticate } from './store/session';
 import { loadItems } from './store/cart';
@@ -35,6 +36,9 @@ function App() {
       <Switch>
         <Route path='/items/:itemId'>
           <ItemPage />
+        </Route>
+        <Route path='/category/:categoryId'>
+          <Category />
         </Route>
         <ProtectedRoute path='/purchase'>
           <Purchase />
