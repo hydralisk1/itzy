@@ -3,6 +3,8 @@ const SET_USER = 'session/SET_USER';
 const REMOVE_USER = 'session/REMOVE_USER';
 const CREATE_SHOP = 'session/CREATE_SHOP'
 const CLOSE_SHOP = 'session/CLOSE_SHOP'
+const ADD_ITEM_TO_LIKES = 'session/ADD_ITEM_TO_LIKES'
+const REMOVE_ITEM_FROM_LIKES = 'session/REMOVE_ITEM_FROM_LIKES'
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -22,7 +24,39 @@ const removeShop = () => ({
   type: CLOSE_SHOP
 })
 
+const addItemToLikes = itemId => ({
+  type: ADD_ITEM_TO_LIKES,
+  itemId
+})
+
+const removeItemFromLikes = itemId => ({
+  type: REMOVE_ITEM_FROM_LIKES,
+  itemId
+})
+
 const initialState = { user: null };
+
+export const likeItem = itemId => async dispatch => {
+  const res = await fetch(`/api/likes/${itemId}`, {method: 'POST'})
+
+  if(res.ok) {
+    dispatch(addItemToLikes(itemId))
+    return true
+  }
+
+  return false
+}
+
+export const removeLikeItem = itemId => async dispatch => {
+  const res = await fetch(`/api/likes/${itemId}`, {method: 'DELETE'})
+
+  if(res.ok) {
+    dispatch(removeItemFromLikes(itemId))
+    return true
+  }
+
+  return false
+}
 
 export const authenticate = () => async (dispatch) => {
   const response = await fetch('/api/auth/', {
@@ -151,6 +185,14 @@ export default function reducer(state = initialState, action) {
       return { user: { ...state.user, shop: action.shopId } }
     case CLOSE_SHOP:
       return { user: { ...state.user, shop: null}}
+    case ADD_ITEM_TO_LIKES:
+      const addLike = {...state.user.likes}
+      addLike[action.itemId] = true
+      return { user: { ...state.user, likes: {...addLike}}}
+    case REMOVE_ITEM_FROM_LIKES:
+      const removeLike = {...state.user.likes}
+      delete removeLike[action.itemId]
+      return { user: { ...state.user, likes: {...removeLike}}}
     default:
       return state;
   }

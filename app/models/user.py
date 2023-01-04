@@ -47,5 +47,6 @@ class User(db.Model, UserMixin):
             'id': self.id,
             'name': self.name,
             'email': self.email,
-            'shop': self.shop[0].id if self.shop else None
+            'shop': self.shop[0].id if self.shop else None,
+            'likes': {like.item_id: True for like in self.likes}
         }

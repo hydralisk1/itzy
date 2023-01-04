@@ -1,0 +1,14 @@
+.title {
+    max-width: 1400px;
+    margin: 1rem auto;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 0 36px;
+}
+
+.message {
+    max-width: 1400px;
+    margin: 1rem auto;
+    font-size: 24px;
+    padding: 1rem 36px;
+}

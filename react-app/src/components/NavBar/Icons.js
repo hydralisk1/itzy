@@ -40,6 +40,7 @@ const Icons = () => {
             <div
                 onMouseEnter={() => setIsOnLike(true)}
                 onMouseLeave={() => setIsOnLike(false)}
+                onClick={() => history.push('/likes')}
                 className={styles.icons}
             >
                 {isOnLike && <div className={styles.bubble}>Favorites</div>}
