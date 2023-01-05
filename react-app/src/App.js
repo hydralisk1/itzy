@@ -11,6 +11,7 @@ import Favorite from './components/Favorite';
 import Category from './components/Category';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import SearchItems from './components/SearchItems';
+import Profile from './components/Profile';
 import { authenticate } from './store/session';
 import { loadItems } from './store/cart';
 
@@ -52,6 +53,9 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path='/shop'>
           <Shop />
+        </ProtectedRoute>
+        <ProtectedRoute path='/profile'>
+          <Profile />
         </ProtectedRoute>
         <Route path='/cart'>
           <CartPage />
