@@ -10,8 +10,7 @@ import boto3
 item_routes = Blueprint('items', __name__)
 
 
-def upload_item_image(name, file: FileStorage):
-    print('=========================')
+def upload_item_image(name, file: FileStorage) -> str:
     filename = 'item-images/' + name[:8] + str(datetime.now()) + '.' + file.filename.split('.')[-1]
 
     s3 = boto3.client(
@@ -20,6 +19,7 @@ def upload_item_image(name, file: FileStorage):
         aws_access_key_id = os.environ.get('S3_KEY'),
         aws_secret_access_key = os.environ.get('S3_SECRET')
     )
+    print('=========================1')
 
     s3.upload_fileobj(
         file,
@@ -29,6 +29,8 @@ def upload_item_image(name, file: FileStorage):
             "ContentType": file.content_type
         }
     )
+
+    print('=========================2')
 
     return f"{os.environ.get('S3_LOCATION')}/{filename}"
 
