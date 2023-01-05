@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
+import Message from '../Message'
+import Placeholder from '../Placeholder'
 import navStyles from '../NavBar/navbar.module.css'
 import styles from './item.module.css'
 
@@ -15,23 +17,72 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
     const [price, setPrice] = useState('$0')
     const [stock, setStock] = useState('0')
     const [desc, setDesc] = useState('')
-    const [primaryImg, setPrimaryImg] = useState('')
-    const [secondaryImg, setSecondaryImg] = useState('')
-    const [video, setVideo] = useState('')
+    const [primaryImg, setPrimaryImg] = useState()
+    const [secondaryImg, setSecondaryImg] = useState()
+    const [video, setVideo] = useState()
 
     const [nameError, setNameError] = useState('')
     const [priceError, setPriceError] = useState('')
     const [stockError, setStockError] = useState('')
     const [descError, setDescError] = useState('')
     const [imgError, setImgError] = useState('')
-    const [videoError, setVideoError] = useState('')
+    // const [videoError, setVideoError] = useState('')
     const [categoryError, setCategoryError] = useState('')
 
     const [allCategories, setAllCategories] = useState({})
     const [showCategories, setShowCategories] = useState(false)
     const [showChild, setShowChild] = useState(0)
 
+    const [preview1, setPreview1] = useState()
+    const [preview2, setPreview2] = useState()
+    const [preview3, setPreview3] = useState()
+
     const [showErrors, setShowErrors] = useState(false)
+
+    const [isMessageOn, setIsMessageOn] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const message = 'Something went wrong. Please try again'
+
+    const handleUpload = (e, setFunc) => {
+        if(e.target.files) setFunc(e.target.files[0])
+    }
+
+    useEffect(() => {
+        if(!primaryImg){
+            setPreview1(undefined)
+            return
+        }
+
+        const objectUrl = typeof primaryImg !== 'string' ? URL.createObjectURL(primaryImg) : primaryImg
+        setPreview1(objectUrl)
+
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [primaryImg])
+
+    useEffect(() => {
+        if(!secondaryImg){
+            setPreview2(undefined)
+            return
+        }
+
+        const objectUrl = typeof secondaryImg !== 'string' ? URL.createObjectURL(secondaryImg) : secondaryImg
+        setPreview2(objectUrl)
+
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [secondaryImg])
+
+    useEffect(() => {
+        if(!video){
+            setPreview3(undefined)
+            return
+        }
+
+        const objectUrl = typeof video !== 'string' ? URL.createObjectURL(video) : video
+        setPreview3(objectUrl)
+
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [video])
 
     useEffect(() => {
         document.body.style.overflow = 'hidden'
@@ -55,14 +106,15 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
             .catch(e => console.log(e))
 
         if(isModify){
+            console.log(item)
             setName(item.name)
             setCategory(`${item.category_1} > ${item.category_2}`)
             setPrice('$' + item.price)
             setStock(item.stock.toString())
             setDesc(item.desc)
             setPrimaryImg(item.images[0])
-            setSecondaryImg(item.images[2] || '')
-            setVideo(item.images[1] || '')
+            setSecondaryImg(item.images[2])
+            setVideo(item.images[1])
         }
 
         setTimeout(() => {
@@ -89,15 +141,8 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
         if(!desc.length) setDescError('Description is required')
         else setDescError('')
 
-        const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')
-
-        if(!primaryImg.length) setImgError('First image is required')
-        else if(!regex.test(primaryImg)) setImgError('Invalid url for the first image')
-        else if(secondaryImg && !regex.test(secondaryImg)) setImgError('Invalid url for the second image')
+        if(!primaryImg) setImgError('First image is required')
         else setImgError('')
-
-        if(video && !regex.test(video)) setVideoError('Invalid url for the video')
-        else setVideoError('')
 
         if(!isModify && categoryId === 0) setCategoryError('Category is required')
         else setCategoryError('')
@@ -118,25 +163,26 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
     const handleSubmit = e => {
         e.preventDefault()
         setShowErrors(true)
-        if(!nameError && !priceError && !stockError && !descError && !imgError && !videoError && !categoryError){
-            const method = isModify ? 'PUT' : 'POST'
-            const headers = {'Content-Type': 'application/json'}
-            const body = {
-                name,
-                price: price.replaceAll('$', '') * 1,
-                stock: stock * 1,
-                desc,
-                images: [primaryImg, secondaryImg],
-                video,
-                shopId,
-            }
 
-            if(method === 'POST' || categoryId !== 0) body.categoryId = categoryId
+        if(!nameError && !priceError && !stockError && !descError && !imgError && !categoryError){
+            setIsLoading(true)
+            const method = isModify ? 'PUT' : 'POST'
+            // const headers = {'Content-Type': 'application/json'}
+            const formData = new FormData()
+            formData.append('name', name)
+            formData.append('price', price.replaceAll('$', '') * 1)
+            formData.append('stock', stock * 1)
+            formData.append('desc', desc)
+            formData.append('primaryImg', primaryImg)
+            formData.append('secondaryImg', secondaryImg)
+            formData.append('video', video)
+            formData.append('shopId', shopId)
+
+            if(method === 'POST' || categoryId !== 0) formData.append('categoryId', categoryId)
 
             const options = {
                 method,
-                headers,
-                body: JSON.stringify(body)
+                body: formData
             }
 
             const url = isModify ? `/api/items/${item.id}` : '/api/items/'
@@ -146,13 +192,19 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
                     if(res.ok) {
                         setIsChanged(true)
                         handleClose()
+                        return
                     }
+                    throw new Error()
                 })
-                .catch(err => console.log(err))
+                .catch(() => {
+                    setIsMessageOn(false)
+                    setTimeout(() => setIsMessageOn(true), 0)
+                })
+                .finally(() => setIsLoading(false))
         }
     }
 
-    return (
+    return (<>
         <div
             ref={modalRef}
             className={navStyles.modalContainer}
@@ -264,45 +316,111 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
                         />
                     </div>
                     <div className={navStyles.errorMessage}>{showErrors && descError}</div>
-                    <div className={navStyles.inputTag}>Item Images</div>
-                    <div className={navStyles.inputContainer} style={{marginBottom: '4px'}}>
-                        <input
-                            className={navStyles.inputField}
-                            type='text'
-                            placeholder='First Image Url'
-                            value={primaryImg}
-                            onChange={e => setPrimaryImg(e.target.value)}
-                        />
-                    </div>
-                    <div className={navStyles.inputContainer}>
-                        <input
-                            className={navStyles.inputField}
-                            type='text'
-                            placeholder='Second Image Url'
-                            value={secondaryImg}
-                            onChange={e => setSecondaryImg(e.target.value)}
-                        />
+                    <div style={{display: 'flex', marginBottom: '32px'}}>
+                        <div style={{marginRight: '16px'}}>
+                            <div className={navStyles.inputTag}>Item Images</div>
+                            <div style={{display: 'flex'}}>
+                                <div style={{marginRight: '8px'}}>
+                                    {
+                                        !!preview1 ?
+                                        <div className={styles.previewHolder}>
+                                            <img className={styles.preview} src={preview1} alt='img' />
+                                            <div className={styles.closeBtn} onClick={() => {
+                                                if(secondaryImg){
+                                                    setPrimaryImg(secondaryImg)
+                                                    setSecondaryImg(undefined)
+                                                }else setPrimaryImg(undefined)
+                                            }}>
+                                                <i style={{color: 'white'}} className="fa-solid fa-xmark"></i>
+                                            </div>
+                                        </div>
+                                        : <>
+                                            <input
+                                                type='file'
+                                                hidden
+                                                id='primary-img'
+                                                accept='image/*'
+                                                onChange={e => handleUpload(e, setPrimaryImg)}
+                                            />
+                                            <label htmlFor='primary-img' className={styles.imgUploadBtn}>
+                                                <i className="fa-solid fa-plus"></i>
+                                            </label>
+                                        </>
+                                    }
+
+                                </div>
+                                {!!preview1 &&
+                                <div>
+                                    {
+                                        !!preview2 ?
+                                        <div className={styles.previewHolder}>
+                                            <img className={styles.preview} src={preview2} alt='img' />
+                                            <div className={styles.closeBtn} onClick={() => {setSecondaryImg(undefined)}}>
+                                                <i style={{color: 'white'}} className="fa-solid fa-xmark"></i>
+                                            </div>
+                                        </div>
+                                        : <>
+                                            <input
+                                                type='file'
+                                                hidden
+                                                id='secondary-img'
+                                                accept='image/*'
+                                                onChange={e => handleUpload(e, setSecondaryImg)}
+                                            />
+                                            <label htmlFor='secondary-img' className={styles.imgUploadBtn}>
+                                                <i className="fa-solid fa-plus"></i>
+                                            </label>
+                                        </>
+                                    }
+                                </div>}
+                            </div>
+                        </div>
+                        <div>
+                            <div className={navStyles.inputTag}>Item Video</div>
+                            <div>
+                                <div>
+                                    {
+                                        !!preview3 ?
+                                        <div className={styles.previewHolder}>
+                                            <video>
+                                                <source src={preview3} />
+                                            </video>
+                                            <div style={{zIndex: 99}} className={styles.closeBtn} onClick={() => {
+                                                console.log(video)
+                                                setVideo(undefined)
+                                                console.log(1)
+                                                console.log(video)
+                                                }}>
+                                                <i style={{color: 'white'}} className="fa-solid fa-xmark"></i>
+                                            </div>
+                                        </div> : <>
+                                            <input
+                                                type='file'
+                                                hidden
+                                                id='video'
+                                                accept='video/mp4'
+                                                onChange={e => handleUpload(e, setVideo)}
+                                            />
+                                            <label htmlFor='video' className={styles.imgUploadBtn}>
+                                                <i className="fa-solid fa-plus"></i>
+                                            </label>
+                                        </>
+                                    }
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className={navStyles.errorMessage}>{showErrors && imgError}</div>
-                    <div className={navStyles.inputTag}>Video</div>
-                    <div className={navStyles.inputContainer}>
-                        <input
-                            className={navStyles.inputField}
-                            type='text'
-                            placeholder='Video Url'
-                            value={video}
-                            onChange={e => setVideo(e.target.value)}
-                        />
-                    </div>
-                    <div className={navStyles.errorMessage}>{showErrors && videoError}</div>
                     <div className={navStyles.submitBtnContainer} style={{display: 'flex', justifyContent: 'center'}}>
                         <button type='submit' style={{width: '30%', marginRight: '16px'}} className={navStyles.formSubmitBtn}>{isModify ? 'Save changes' : 'Add Item'}</button>
                         <button style={{width: '30%'}} className={navStyles.formSubmitBtn} onClick={handleClose}>Cancel</button>
                     </div>
                 </form>
             </div>
+            {isMessageOn && <Message setIsMessageOn={setIsMessageOn} isError={true} message={message} />}
         </div>
-    )
+        {isLoading && <Placeholder width='100vw' height='100vh' position='fixed' />}
+    </>)
 }
 
 export default ItemModify

@@ -13,7 +13,7 @@
     font-size: 1.5rem;
     opacity: 0;
     transition: all 1s ease;
-    z-index: 99;
+    z-index: 200;
     background-color: white;
 }
 

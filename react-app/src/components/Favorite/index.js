@@ -30,7 +30,10 @@ const Favorite = () => {
                 })
                 .catch(() => setIsError(true))
                 .finally(() => setIsLoaded(true))
-        }else setIsLoaded(true)
+        }else {
+            setData([])
+            setIsLoaded(true)
+        }
     }, [likedItems])
 
     return (

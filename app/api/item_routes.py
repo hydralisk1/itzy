@@ -1,33 +1,146 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
 from app.models import Item, Storage, db
+from datetime import datetime
+from werkzeug.datastructures import FileStorage
+
+import os
+import boto3
 
 item_routes = Blueprint('items', __name__)
+
+
+def upload_item_image(name, file: FileStorage):
+    filename = 'item-images/' + name[:8] + str(datetime.now()) + '.' + file.filename.split('.')[-1]
+
+    s3 = boto3.client(
+        's3',
+        region_name = os.environ.get('S3_REGION'),
+        aws_access_key_id = os.environ.get('S3_KEY'),
+        aws_secret_access_key = os.environ.get('S3_SECRET')
+    )
+
+    s3.upload_fileobj(
+        file,
+        os.environ.get('S3_BUCKET'),
+        filename,
+        ExtraArgs = {
+            "ContentType": file.content_type
+        }
+    )
+
+    return f"{os.environ.get('S3_LOCATION')}/{filename}"
+
+
+def delete_item_image(filename):
+    s3 = boto3.client(
+        's3',
+        region_name = os.environ.get('S3_REGION'),
+        aws_access_key_id = os.environ.get('S3_KEY'),
+        aws_secret_access_key = os.environ.get('S3_SECRET')
+    )
+
+    s3.delete_object(
+        Bucket = os.environ.get('S3_BUCKET'),
+        Key = filename.split('amazonaws.com/')[1]
+    )
+
 
 @item_routes.route('/', methods=['POST'])
 @login_required
 def add_item():
-    data = request.json
-
     try:
         shop_id = current_user.shop[0].id
 
-        if shop_id != data['shopId']:
+        if shop_id != int(request.form['shopId']):
             return {'error': 'You don\'n have permission to add this item to this shop'}, 403
 
-        new_item = Item(name=data['name'], shop_id=shop_id, category_id=data['categoryId'], price=data['price'], desc=data['desc'], primary_image=data['images'][0], secondary_image=data['images'][1], video=data['video'])
+        image1 = request.files.to_dict().get('primaryImg')
+        image2 = request.files.to_dict().get('secondaryImg')
+        video = request.files.to_dict().get('video')
+
+        image1 = upload_item_image(request.form['name'], image1)
+
+        if image2:
+            image2 = upload_item_image(request.form['name'], image2)
+
+        if video:
+            video = upload_item_image(request.form['name'], video)
+
+        new_item = Item(name=request.form['name'], shop_id=shop_id, category_id=request.form['categoryId'], price=float(request.form['price']), desc=request.form['desc'], primary_image=image1, secondary_image=image2, video=video)
+
         db.session.add(new_item)
         db.session.commit()
 
         db.session.refresh(new_item)
 
-        db.session.add(Storage(item_id=new_item.id, qty=data['stock'], receiving='receive'))
+        db.session.add(Storage(item_id=new_item.id, qty=int(request.form['stock']), receiving='receive'))
         db.session.commit()
 
         return {'message': 'successfully added'}, 201
 
-    except:
+    except Exception as e:
+        print(e)
         return {'error':'something went wrong'}, 500
+
+
+@item_routes.route('/<int:item_id>', methods=['PUT'])
+@login_required
+def modify_item(item_id):
+    try:
+        shop_id = current_user.shop[0].id
+        item = Item.query.get(item_id)
+
+        if shop_id != item.shop_id:
+            return {'error': 'You don\'n have permission to modify this item'}, 403
+
+        item = Item.query.get(item_id)
+        item.name = request.form['name']
+        item.price = float(request.form['price'])
+        item.desc = request.form['desc']
+
+        image1 = request.files.to_dict().get('primaryImg')
+        image2 = request.files.to_dict().get('secondaryImg')
+        video = request.files.to_dict().get('video')
+
+        if image1:
+            image1 = upload_item_image(request.form['name'], image1)
+            delete_item_image(item.primary_image)
+            item.primary_image = image1
+
+        if item.secondary_image and request.form.get('secondaryImg') != item.secondary_image:
+            delete_item_image(item.secondary_image)
+            item.secondary_image = None
+
+        if image2:
+            image2 = upload_item_image(request.form['name'], image2)
+            item.secondary_image = image2
+
+        if item.video and request.form.get('video') != item.video:
+            delete_item_image(item.video)
+            item.video = None
+
+        if video:
+            video = upload_item_image(request.form['name'], video)
+            item.video = video
+
+
+        if request.form.get('categoryId'):
+            item.category_id = request.form['categoryId']
+
+        stock = item.get_stock()
+
+        stock_from_form = int(request.form['stock'])
+        if stock != stock_from_form:
+            receiving = 'release' if stock > stock_from_form else 'receive'
+            qty = stock - stock_from_form if stock > stock_from_form else stock_from_form - stock
+            db.session.add(Storage(item_id=item_id, qty=qty, receiving=receiving))
+
+        db.session.commit()
+
+        return {'message': 'successfully modified'}, 200
+    except:
+        return {'error': 'something went wrong'}, 500
 
 
 @item_routes.route('/<int:item_id>', methods=['DELETE'])
@@ -40,6 +153,10 @@ def delete_item(item_id):
         if shop_id != item.shop_id:
             return {'error': 'You don\'n have permission to modify this item'}, 403
 
+        for filename in [item.primary_image, item.secondary_image, item.video]:
+            if filename:
+                delete_item_image(filename)
+
         db.session.delete(item)
         db.session.commit()
 
@@ -47,42 +164,6 @@ def delete_item(item_id):
     except:
         return {'error': 'Something went wrong'}, 500
 
-
-@item_routes.route('/<int:item_id>', methods=['PUT'])
-@login_required
-def modify_item(item_id):
-    data = request.json
-
-    try:
-        shop_id = current_user.shop[0].id
-        item = Item.query.get(item_id)
-
-        if shop_id != item.shop_id:
-            return {'error': 'You don\'n have permission to modify this item'}, 403
-
-        item = Item.query.get(item_id)
-        item.name = data['name']
-        item.price = data['price']
-        item.desc = data['desc']
-        item.primary_image, item.secondary_image = data['images']
-        item.video = data['video']
-
-        if data.get('categoryId'):
-            item.category_id = data['categoryId']
-
-        stock = item.get_stock()
-
-
-        if stock != data['stock']:
-            receiving = 'release' if stock > data['stock'] else 'receive'
-            qty = stock - data['stock'] if stock > data['stock'] else data['stock'] - stock
-            db.session.add(Storage(item_id=item_id, qty=qty, receiving=receiving))
-
-        db.session.commit()
-
-        return {'message': 'successfully modified'}, 200
-    except:
-        return {'error': 'something went wrong'}, 500
 
 @item_routes.route('/search/<keyword>')
 def search_items(keyword):

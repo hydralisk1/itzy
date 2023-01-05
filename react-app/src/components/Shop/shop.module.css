@@ -43,13 +43,15 @@
 
 .stockContainer {
     margin: 2rem 0;
+    width: 100%;
     display: flex;
+    flex-flow: row wrap;
 }
 
 .cardContainer {
     width: 250px;
     aspect-ratio: auto 2/3;
-    margin-right: 1rem;
+    margin: 8px 1rem 8px 0;
     position: relative;
     perspective: 100rem;
     -webkit-perspective: 100rem;

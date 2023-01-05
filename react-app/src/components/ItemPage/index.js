@@ -65,15 +65,15 @@ const ItemPage = () => {
                         {
                             data.images.filter(d => d).map((d, i) => {
                                 const style = d === currentImg ? styles.smImgContainer + ' ' + styles.current : styles.smImgContainer
-                                const content = d.slice(-3) === 'jpg' ? <img key={d} className={styles.smallImg} src={d} alt='item' /> : <video key={d} className={styles.smallImg} muted><source src={d} type='video/mp4' /></video>
+                                const content = d.slice(-3) !== 'mp4' ? <img key={d} className={styles.smallImg} src={d} alt='item' /> : <video key={d} className={styles.smallImg} muted><source src={d} type='video/mp4' /></video>
                                 return <div key={i} className={style} onClick={() => setCurrentImg(d)}>{content}</div>
                             })
                         }
                     </div>
                     <div className={styles.currentImgContainer}>
-                        { currentImg.slice(-3) === 'jpg' ?
+                        { currentImg.slice(-3) !== 'mp4' ?
                             <img className={styles.currentImg} src={currentImg} alt='item' /> :
-                            <video className={styles.currentImg} muted><source src={currentImg} type='video/mp4' /></video>
+                            <video className={styles.currentImg} controls muted><source src={currentImg} type='video/mp4' /></video>
                         }
                     </div>
                 </div>
