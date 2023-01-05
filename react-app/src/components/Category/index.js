@@ -13,6 +13,7 @@ const Category = () => {
     const [categoryName, setCategoryName] = useState('')
 
     useEffect(() => {
+        setIsLoaded(false)
         fetch(`/api/category/${categoryId}`)
             .then(res => {
                 if(res.ok) return res.json()

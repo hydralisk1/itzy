@@ -16,6 +16,19 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
+@order_routes.route('/')
+@login_required
+def get_order_history():
+    # print(current_user.transactions)
+    # return {'test': 'test'}
+
+    return {'orders': [{
+        'item': order.items.get_item(),
+        'qty': order.qty,
+        'address': order.shipping_address,
+        'time': order.created_at
+        } for order in current_user.transactions]}
+
 @order_routes.route('/', methods=['POST'])
 @login_required
 def order():

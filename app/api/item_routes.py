@@ -56,8 +56,8 @@ def add_item():
             return {'error': 'You don\'n have permission to add this item to this shop'}, 403
 
         image1 = request.files.to_dict().get('primaryImg')
-        image2 = request.files.to_dict().get('secondaryImg')
-        video = request.files.to_dict().get('video')
+        image2 = request.files.to_dict().get('secondaryImg') or None
+        video = request.files.to_dict().get('video') or None
 
         image1 = upload_item_image(request.form['name'], image1)
 
@@ -66,6 +66,8 @@ def add_item():
 
         if video:
             video = upload_item_image(request.form['name'], video)
+
+        print(image2, video)
 
         new_item = Item(name=request.form['name'], shop_id=shop_id, category_id=request.form['categoryId'], price=float(request.form['price']), desc=request.form['desc'], primary_image=image1, secondary_image=image2, video=video)
 
