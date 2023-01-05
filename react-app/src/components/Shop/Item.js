@@ -16,8 +16,7 @@ const Item = ({ item, setIsChanged }) => {
         <div className={styles.cardContainer}>
             <div
                 style={{
-                    background: `center no-repeat fixed url("${item.images[0]}")`,
-                    backgroundSize: 'cover'
+                    background: `center/auto 100% no-repeat url("${item.images[0]}")`,
                 }}
                 className={styles.front + ' ' + styles.card}
             >

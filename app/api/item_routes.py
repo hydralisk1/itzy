@@ -103,6 +103,14 @@ def modify_item(item_id):
         image2 = request.files.to_dict().get('secondaryImg')
         video = request.files.to_dict().get('video')
 
+
+        if request.form.get('primaryImg') and request.form.get('secondaryImg') == 'undefined':
+            if request.form.get('primaryImg') == item.secondary_image:
+                print('================================')
+                delete_item_image(item.primary_image)
+                item.primary_image = item.secondary_image
+                item.secondary_image = None
+
         if image1:
             image1 = upload_item_image(request.form['name'], image1)
             delete_item_image(item.primary_image)

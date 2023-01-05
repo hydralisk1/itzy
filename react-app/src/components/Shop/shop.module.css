@@ -55,6 +55,7 @@
     position: relative;
     perspective: 100rem;
     -webkit-perspective: 100rem;
+    background-size: 'auto 100%';
 }
 
 .cardContainer:hover .front {
