@@ -11,6 +11,7 @@ item_routes = Blueprint('items', __name__)
 
 
 def upload_item_image(name, file: FileStorage):
+    print('=========================')
     filename = 'item-images/' + name[:8] + str(datetime.now()) + '.' + file.filename.split('.')[-1]
 
     s3 = boto3.client(
@@ -50,10 +51,7 @@ def delete_item_image(filename):
 @login_required
 def add_item():
     try:
-        print('=============================0')
         shop_id = current_user.shop[0].id
-
-        print('=============================1')
 
         if shop_id != int(request.form['shopId']):
             return {'error': 'You don\'n have permission to add this item to this shop'}, 403
@@ -72,7 +70,13 @@ def add_item():
         if video:
             video = upload_item_image(request.form['name'], video)
 
-        new_item = Item(name=request.form['name'], shop_id=shop_id, category_id=request.form['categoryId'], price=float(request.form['price']), desc=request.form['desc'], primary_image=image1, secondary_image=image2, video=video)
+        new_item = Item(name=request.form['name'], shop_id=shop_id, category_id=request.form['categoryId'], price=float(request.form['price']), desc=request.form['desc'], primary_image=image1)
+
+        if image2:
+            new_item.secondary_image=image2
+
+        if video:
+            new_item.video=video
 
         db.session.add(new_item)
         db.session.commit()
