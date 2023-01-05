@@ -85,7 +85,7 @@ const PhaseThree = ({setPhase, cardNum, nameOnCard, fullName, address}) => {
                 if(res.ok) {
                     await dispatch(removeItems(orderItems.map(item => item.id), true))
                     sessionStorage.removeItem('PurchaseInfo')
-                    history.push('/')
+                    history.push('/order-history')
                 }
                 else throw new Error()
             })

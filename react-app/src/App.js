@@ -12,6 +12,7 @@ import Category from './components/Category';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import SearchItems from './components/SearchItems';
 import Profile from './components/Profile';
+import OrderHistory from './components/OrderHistory';
 import { authenticate } from './store/session';
 import { loadItems } from './store/cart';
 
@@ -56,6 +57,9 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path='/profile'>
           <Profile />
+        </ProtectedRoute>
+        <ProtectedRoute path='/order-history'>
+          <OrderHistory />
         </ProtectedRoute>
         <Route path='/cart'>
           <CartPage />

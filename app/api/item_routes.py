@@ -106,7 +106,6 @@ def modify_item(item_id):
 
         if request.form.get('primaryImg') and request.form.get('secondaryImg') == 'undefined':
             if request.form.get('primaryImg') == item.secondary_image:
-                print('================================')
                 delete_item_image(item.primary_image)
                 item.primary_image = item.secondary_image
                 item.secondary_image = None
