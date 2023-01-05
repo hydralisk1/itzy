@@ -29,8 +29,6 @@ def upload_item_image(name, file: FileStorage) -> str:
         }
     )
 
-    print('=========================2')
-
     return f"{os.environ.get('S3_LOCATION')}/{filename}"
 
 
