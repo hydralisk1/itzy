@@ -50,7 +50,10 @@ def delete_item_image(filename):
 @login_required
 def add_item():
     try:
+        print('=============================0')
         shop_id = current_user.shop[0].id
+
+        print('=============================1')
 
         if shop_id != int(request.form['shopId']):
             return {'error': 'You don\'n have permission to add this item to this shop'}, 403
@@ -59,6 +62,8 @@ def add_item():
         image2 = request.files.to_dict().get('secondaryImg') or None
         video = request.files.to_dict().get('video') or None
 
+        print(image2, video)
+
         image1 = upload_item_image(request.form['name'], image1)
 
         if image2:
@@ -66,8 +71,6 @@ def add_item():
 
         if video:
             video = upload_item_image(request.form['name'], video)
-
-        print(image2, video)
 
         new_item = Item(name=request.form['name'], shop_id=shop_id, category_id=request.form['categoryId'], price=float(request.form['price']), desc=request.form['desc'], primary_image=image1, secondary_image=image2, video=video)
 
