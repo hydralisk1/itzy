@@ -72,7 +72,7 @@ const Icons = () => {
                             <div className={styles.menuIcon}><i style={{color: '#808080', borderRadius: '50%', backgroundColor: '#c8c8c8', padding: '6px', width: '28px', height: '28px', textAlign: 'center'}} className="fa-solid fa-user"></i></div>
                             <div>
                                 <div>{user.name}</div>
-                                <div style={{width: '100%'}}>View your profile</div>
+                                <div style={{width: '100%'}}>View your order history</div>
                             </div>
                         </li>
                         <li className={styles.accountMenu} onClick={handleLogout}>
