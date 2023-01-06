@@ -60,8 +60,30 @@ This project is a fully-functional web application that allows users to buy and 
 
 
 - Order
+<img width="1433" alt="image" src="https://user-images.githubusercontent.com/11830583/211093198-b7632390-976f-48cf-9d38-df6afe53ff09.png">
+<img width="1435" alt="image" src="https://user-images.githubusercontent.com/11830583/211093275-23c61234-33ee-4ed2-a0c1-e938892d3b04.png">
+<img width="1433" alt="image" src="https://user-images.githubusercontent.com/11830583/211093314-11acfd6b-0f3a-4df3-9589-3f8eca8fd368.png">
+
+- Order History
+<img width="1407" alt="image" src="https://user-images.githubusercontent.com/11830583/211093415-081300de-4ce0-4e99-8dcb-c084cc277ec1.png">
+
 
 - Favorite Items
+<img width="278" alt="image" src="https://user-images.githubusercontent.com/11830583/211093458-7ea550e1-e745-4de4-b5f8-73ff19f3ee3a.png">
+<img width="284" alt="image" src="https://user-images.githubusercontent.com/11830583/211093488-06e25339-0b0c-4e4a-8f58-310962abe23b.png">
+<img width="693" alt="image" src="https://user-images.githubusercontent.com/11830583/211093519-0947270a-26ed-4e22-9e4e-69ddb7a4e315.png">
+
+
+- Shop
+<img width="797" alt="image" src="https://user-images.githubusercontent.com/11830583/211093622-f6debebe-ba80-4b34-8995-19501e086918.png">
+<img width="1170" alt="image" src="https://user-images.githubusercontent.com/11830583/211093906-38efb5f2-658f-4727-bd94-801e46298b46.png">
+
+
+- Items
+<img width="854" alt="image" src="https://user-images.githubusercontent.com/11830583/211093968-4885ede2-546f-4aaf-8cf6-97c55a581746.png">
+<img width="1015" alt="image" src="https://user-images.githubusercontent.com/11830583/211094107-1df9a74f-8f2d-415d-b166-d75c22c6df61.png">
+<img width="1382" alt="image" src="https://user-images.githubusercontent.com/11830583/211094138-aae510ed-9d3b-4999-bdd4-9712e9096e5c.png">
+<img width="835" alt="image" src="https://user-images.githubusercontent.com/11830583/211094212-bb541b28-b8f1-40df-8d9d-d27aefa02822.png">
 
 
 
