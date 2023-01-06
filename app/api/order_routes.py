@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
-from app.models import Transaction
+from app.models import Transaction, db
 from app.forms import OrderForm
 
 order_routes = Blueprint('orders', __name__)
@@ -19,13 +19,14 @@ def validation_errors_to_error_messages(validation_errors):
 @order_routes.route('/')
 @login_required
 def get_order_history():
-
     return {'orders': [{
+        'id': order.id,
         'item': order.items.get_item(),
         'qty': order.qty,
         'address': order.shipping_address,
         'time': order.created_at
         } for order in current_user.transactions]}
+
 
 @order_routes.route('/', methods=['POST'])
 @login_required
@@ -41,3 +42,20 @@ def order():
             return {'error': 'something went wrong'}, 500
 
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@order_routes.route('/<int:id>', methods=['DELETE'])
+@login_required
+def remove_item(id):
+    try:
+        order = Transaction.query.filter(Transaction.user_id == current_user.id, Transaction.id == id).first()
+        if not order:
+            return {'error': 'can\'t cancel this item'}, 403
+
+        db.session.delete(order)
+        db.session.commit()
+
+        return {'message': 'successfully canceled'}
+    except Exception as e:
+        print(e)
+        return {'error': 'error occured while cancel'}, 500
