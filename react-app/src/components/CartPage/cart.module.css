@@ -3,6 +3,7 @@
     padding: 36px;
     margin: 0 auto;
     border-bottom: 1px solid #ececec;
+    min-height: 450px;
 }
 
 .topLine {

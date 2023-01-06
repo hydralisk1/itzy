@@ -112,7 +112,7 @@ const CartPage = () => {
             {purchaseProtection()}
             <div className={styles.cartEmpty + ' ' + styles.inYourCart}>Your cart is empty.</div>
             {carbonEmissions()}
-        </div> : isLoaded ? isError ? <div>Something went worng. Please try again</div> :
+        </div> : isLoaded ? isError ? <div className={styles.cartContainer}>Error occured while loading cart items. Please try again</div> :
         <div className={styles.cartContainer}>
             <div className={styles.topLine}>
                 <div className={styles.inYourCart}>{Object.keys(cartItems).length} items in your cart</div>
