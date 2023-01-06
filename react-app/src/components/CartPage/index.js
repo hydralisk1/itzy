@@ -192,7 +192,7 @@ const CartPage = () => {
                                     <span className={styles.cards}><i style={{ fontSize: '2rem' }} className="fa-brands fa-cc-amex"></i></span>
                                 </label>
                             </li>
-                            <li className={styles.options}>
+                            {/* <li className={styles.options}>
                                 <div className={styles.radioBtn}>
                                     <input
                                         id='paypal'
@@ -221,7 +221,7 @@ const CartPage = () => {
                                 <label htmlFor='apple-pay'>
                                     <span className={styles.cards}><i style={{ fontSize: '2rem' }} className="fa-brands fa-cc-apple-pay"></i></span>
                                 </label>
-                            </li>
+                            </li> */}
                         </ul>
                         <div className={styles.total}>
                             <div style={{fontWeight: 600, letterSpacing: '0.5px'}}>Item(s) total</div>
