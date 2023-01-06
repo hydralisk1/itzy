@@ -73,6 +73,7 @@
     max-width: 1200px;
     padding: 12px;
     margin: 0 auto;
+    min-height: 450px;
 }
 
 .addressForm {
