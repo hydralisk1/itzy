@@ -50,7 +50,10 @@ const OrderHistory = () => {
                 })
                 setData(d)
             })
-            .catch(e => console.log(e))
+            .catch(() => {
+                setMessage('Error occured while loading your order. Please try again later.')
+                setIsMessageOn(true)
+            })
             .finally(() => setIsLoaded(true))
     }, [])
 
@@ -76,7 +79,6 @@ const OrderHistory = () => {
     return (
         isLoaded ?<>
         <div className={styles.profileContainer}>
-            {console.log(data)}
             <div className={styles.greetings}>Hello, {user.name}</div>
             <div className={styles.title}>Your order history</div>
             <div className={styles.cancelExplanation}>You can cancel items on preparing.</div>

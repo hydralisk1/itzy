@@ -78,6 +78,7 @@
 .addressForm {
     margin: 0 auto;
     max-width: 640px;
+    min-height: 400px;
 }
 
 .formTitle {

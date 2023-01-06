@@ -1,0 +1,94 @@
+.footerContainer {
+    width: 100%;
+    /* min-height: 200px; */
+    background-color: rgb(47, 70, 108);
+    padding: 36px 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bottomContainer {
+    width: 100%;
+    background-color: rgb(48, 54, 62);
+    color: white;
+    padding: 1rem;
+}
+
+.createGroup {
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 4px;
+    margin-left: 2rem;
+    cursor: pointer;
+}
+
+.upperContainer {
+    width: 1120px;
+    margin: 0 auto;
+}
+
+.groupStart {
+    border-bottom: solid 1px darkgray;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.footerMenu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu > li {
+    padding: 6px 0;
+}
+
+.menu > li:first-child {
+    font-weight: 700;
+}
+
+.menu > li:not(:first-child){
+    cursor: pointer;
+    font-size: 0.875rem
+}
+
+.menu > li:not(:first-child):hover {
+    color: darkgray;
+}
+
+.bottomMenu {
+    width: 1120px;
+    margin: 0 auto;
+    padding: 1rem 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.contactContainer {
+    display: flex;
+    align-items: center;
+}
+
+.myName {
+    font-size: 28px;
+    margin-bottom: 1rem;
+}
+
+.contact {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.svg {
+	margin: auto;
+	width: 36px;
+}

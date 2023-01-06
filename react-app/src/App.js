@@ -12,6 +12,7 @@ import Category from './components/Category';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import SearchItems from './components/SearchItems';
 import OrderHistory from './components/OrderHistory';
+import Footer from './components/Footer';
 import { authenticate } from './store/session';
 import { loadItems } from './store/cart';
 
@@ -64,6 +65,7 @@ function App() {
           <MainPage />
         </Route>
       </Switch>
+      <Footer />
     </>
   );
 }

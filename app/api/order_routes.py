@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
-from app.models import Transaction, db
+from app.models import Transaction, db, Storage
 from app.forms import OrderForm
 
 order_routes = Blueprint('orders', __name__)
@@ -52,7 +52,9 @@ def remove_item(id):
         if not order:
             return {'error': 'can\'t cancel this item'}, 403
 
+        db.session.add(Storage(item_id=order.item_id, qty=order.qty, receiving='receive'))
         db.session.delete(order)
+
         db.session.commit()
 
         return {'message': 'successfully canceled'}

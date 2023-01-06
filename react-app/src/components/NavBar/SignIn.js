@@ -26,7 +26,6 @@ const SignIn = ({ setIsSignUp, setIsModalOn }) => {
 
             dispatch(login(email, password))
                 .then(res => {
-                    console.log(res)
                     if(res === null){
                         const cartItems = JSON.parse(localStorage.getItem('cart'))
                         dispatch(loadItems(true))

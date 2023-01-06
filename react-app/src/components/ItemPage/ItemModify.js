@@ -42,7 +42,7 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
     const [isMessageOn, setIsMessageOn] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-    const message = 'Something went wrong. Please try again'
+    const [message, setMessage] = useState('Something went wrong. Please try again')
 
     const handleUpload = (e, setFunc) => {
         if(e.target.files) setFunc(e.target.files[0])
@@ -103,10 +103,12 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
                 })
                 setAllCategories(categories)
             })
-            .catch(e => console.log(e))
+            .catch(() => {
+                setMessage('Error occured while loading data. Please try again later.')
+                setIsMessageOn(true)
+            })
 
         if(isModify){
-            console.log(item)
             setName(item.name)
             setCategory(`${item.category_1} > ${item.category_2}`)
             setPrice('$' + item.price)
@@ -386,10 +388,7 @@ const ItemModify = ({ setIsModalOn, item = null, setIsChanged }) => {
                                                 <source src={preview3} />
                                             </video>
                                             <div style={{zIndex: 99}} className={styles.closeBtn} onClick={() => {
-                                                console.log(video)
                                                 setVideo(undefined)
-                                                console.log(1)
-                                                console.log(video)
                                                 }}>
                                                 <i style={{color: 'white'}} className="fa-solid fa-xmark"></i>
                                             </div>

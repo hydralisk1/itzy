@@ -32,7 +32,7 @@ const CreateShop = () => {
     }, [name])
 
     return (<>
-        <div className={orderStyles.contentContainer}>
+        <div style={{minHeight: '400px'}} className={orderStyles.contentContainer}>
             <div className={orderStyles.addressForm}>
                 <div className={orderStyles.formTitle}>Name your shop</div>
                 <p className={styles.explain}>

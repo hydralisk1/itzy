@@ -2,6 +2,7 @@ import { useEffect, useState, Fragment, Children } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { removeItems } from '../../store/cart'
+import Message from '../Message'
 import Placeholder from '../Placeholder'
 import styles from './purchase.module.css'
 import cartStyles from '../CartPage/cart.module.css'
@@ -18,6 +19,8 @@ const PhaseThree = ({setPhase, cardNum, nameOnCard, fullName, address}) => {
     const [isLoaded, setIsLoaded] = useState(false)
     const [isError, setIsError] = useState(false)
     const [items, setItems] = useState()
+    const [isMessageOn, setIsMessageOn] = useState(false)
+    const [message, setMessage] = useState('Something went wrong. Please try again')
 
     useEffect(() => {
         const purchaseItems = JSON.parse(sessionStorage.getItem('purchaseItems'))
@@ -72,8 +75,6 @@ const PhaseThree = ({setPhase, cardNum, nameOnCard, fullName, address}) => {
         const orderItems = Object.values(items).reduce((p, c) => [...p, ...c], []).map(item => ({id: item.id, qty: item.qty}))
         const body = JSON.stringify({items: orderItems, address})
 
-        console.log(orderItems)
-
         const options = {
             method,
             headers,
@@ -89,13 +90,17 @@ const PhaseThree = ({setPhase, cardNum, nameOnCard, fullName, address}) => {
                 }
                 else throw new Error()
             })
-            .catch(err => console.log(err))
+            .catch(() => {
+                setMessage('Error occured while placing your order. Please try again later')
+                setIsMessageOn(true)
+            })
 
     }
 
     return (
-        isLoaded ? isError ? <div>Something went wrong</div> :
-        <div className={styles.addressForm}>
+        isLoaded ? isError ?
+        <div className={styles.addressForm}>Error occured while loading data. Please try again later.</div> :
+        <><div className={styles.addressForm}>
             <div className={styles.formTitle}>Review your order</div>
             <div className={cartStyles.shopName}>Shipping Address</div>
             <div style={{fontSize: '20px', marginBottom: '1rem'}}>{fullName} - {address}</div>
@@ -150,6 +155,8 @@ const PhaseThree = ({setPhase, cardNum, nameOnCard, fullName, address}) => {
                     >Place order</div>
                 </div>
         </div>
+        {isMessageOn && <Message setIsMessageOn={setIsMessageOn} isError={true} message={message} />}
+        </>
         : <Placeholder />
     )
 }
