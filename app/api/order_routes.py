@@ -19,8 +19,6 @@ def validation_errors_to_error_messages(validation_errors):
 @order_routes.route('/')
 @login_required
 def get_order_history():
-    # print(current_user.transactions)
-    # return {'test': 'test'}
 
     return {'orders': [{
         'item': order.items.get_item(),

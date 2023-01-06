@@ -59,8 +59,6 @@ def add_item():
         image2 = request.files.to_dict().get('secondaryImg') or None
         video = request.files.to_dict().get('video') or None
 
-        print(image2, video)
-
         image1 = upload_item_image(request.form['name'], image1)
 
         if image2:
