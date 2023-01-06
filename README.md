@@ -40,15 +40,24 @@ This project is a fully-functional web application that allows users to buy and 
 <img width="1435" alt="image" src="https://user-images.githubusercontent.com/11830583/211092216-d5d1d9a4-5a14-4c92-b700-0500c7d44d35.png">
 
 - Search Items
-
+<img width="1119" alt="image" src="https://user-images.githubusercontent.com/11830583/211092348-69aaaaf6-d4c5-4123-928c-2562856a641f.png">
+<img width="1437" alt="image" src="https://user-images.githubusercontent.com/11830583/211092391-b531ca5f-17e2-4da0-95bb-0e81758c3112.png">
 
 - Items by category
+<img width="1379" alt="image" src="https://user-images.githubusercontent.com/11830583/211092452-36468756-4988-43cd-b39c-0afbaf014ae2.png">
+<img width="1436" alt="image" src="https://user-images.githubusercontent.com/11830583/211092479-d020cccc-aef6-484d-8db0-ecc1f6d33691.png">
 
 - Product Detail Page
+<img width="1437" alt="image" src="https://user-images.githubusercontent.com/11830583/211092534-87f853aa-c826-4c3c-8891-443dd2c2d0d8.png">
 
 - Cart
+<img width="1433" alt="image" src="https://user-images.githubusercontent.com/11830583/211092587-1f0219ae-c926-4fbb-b8a7-4ae1d0c4591f.png">
+<img width="1421" alt="image" src="https://user-images.githubusercontent.com/11830583/211092609-58099033-714d-433c-b812-b9de478e1530.png">
 
 - Login / Sign up Modal
+<img width="609" alt="image" src="https://user-images.githubusercontent.com/11830583/211092665-078ed0b0-73a8-4602-a1ee-123067917ef5.png">
+<img width="609" alt="image" src="https://user-images.githubusercontent.com/11830583/211092691-686d3b6a-3dde-43c8-a9fc-3208a4ed4a98.png">
+
 
 - Order
 
