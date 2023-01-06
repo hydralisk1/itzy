@@ -37,8 +37,10 @@ This project is a fully-functional web application that allows users to buy and 
 ## Features of Itzy:
 
 - Main page for everyone
+<img width="1435" alt="image" src="https://user-images.githubusercontent.com/11830583/211092216-d5d1d9a4-5a14-4c92-b700-0500c7d44d35.png">
 
 - Search Items
+
 
 - Items by category
 
