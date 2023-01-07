@@ -166,16 +166,16 @@ def delete_item(item_id):
         if shop_id != item.shop_id:
             return {'error': 'You don\'n have permission to modify this item'}, 403
 
-        for filename in [item.primary_image, item.secondary_image, item.video]:
-            if filename:
-                delete_item_image(filename)
+        filenames = [item.primary_image, item.secondary_image, item.video]
 
         db.session.delete(item)
         db.session.commit()
 
+        Item.delete_item_files(filenames)
+
         return {'message': 'Successfully deleted'}
-    except:
-        return {'error': 'Something went wrong'}, 500
+    except Exception as e:
+        return {'error': 'cannot remove this item'}, 406
 
 
 @item_routes.route('/search/<keyword>')

@@ -2,20 +2,28 @@ import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import ItemModify from '../ItemPage/ItemModify'
 import Placeholder from '../Placeholder'
+import Message from '../Message'
 import styles from './shop.module.css'
 
 const Item = ({ item, setIsChanged }) => {
     const history = useHistory()
     const [isModalOn, setIsModalOn] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [isMessageOn, setIsMessageOn] = useState(false)
+    const [message, setMessage] = useState('Something went wrong. Please try again')
 
     const handleDelete = () => {
         setIsLoading(true)
         fetch(`/api/items/${item.id}`, {method: 'DELETE'})
             .then(res => {
                 if(res.ok) setIsChanged(true)
-                setIsLoading(false)
+                throw new Error
             })
+            .catch(() => {
+                setMessage('You can\'t remove this item since someone purchased this item')
+                setIsMessageOn(true)
+            })
+            .finally(() => setIsLoading(false))
     }
 
     return (<>
@@ -57,7 +65,8 @@ const Item = ({ item, setIsChanged }) => {
                 >Click to remove this item</div>
             </div>
         </div>
-        { isModalOn && <ItemModify setIsChanged={setIsChanged} setIsModalOn={setIsModalOn} item={item} />}
+        {isModalOn && <ItemModify setIsChanged={setIsChanged} setIsModalOn={setIsModalOn} item={item} />}
+        {isMessageOn && <Message setIsMessageOn={setIsMessageOn} isError={true} message={message} />}
         {isLoading && <Placeholder width='100vw' height='100vh' position='fixed' />}
     </>)
 }

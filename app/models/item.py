@@ -77,7 +77,8 @@ class Item(db.Model):
             'images': [self.primary_image, self.video, self.secondary_image]
         }
 
-    def delete_item_files(self):
+    @staticmethod
+    def delete_item_files(filenames:list):
         s3 = boto3.client(
             's3',
             region_name = os.environ.get('S3_REGION'),
@@ -85,7 +86,7 @@ class Item(db.Model):
             aws_secret_access_key = os.environ.get('S3_SECRET')
         )
 
-        keys = [{'Key': filename.split('amazonaws.com/')[1]} for filename in [self.primary_image, self.secondary_image, self.video] if filename]
+        keys = [{'Key': filename.split('amazonaws.com/')[1]} for filename in filenames if filename]
 
         s3.delete_objects(
             Bucket = os.environ.get('S3_BUCKET'),

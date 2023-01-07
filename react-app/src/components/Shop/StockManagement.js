@@ -5,6 +5,7 @@ import { closeShop } from '../../store/session'
 import Item from './Item'
 import ItemModify from '../ItemPage/ItemModify'
 import Placeholder from '../Placeholder'
+import Message from '../Message'
 import itemStyles from '../ItemPage/item.module.css'
 import styles from './shop.module.css'
 
@@ -17,6 +18,8 @@ const StockManagement = () => {
     const [isChanged, setIsChanged] = useState(true)
     const [isModalOn, setIsModalOn] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [isMessageOn, setIsMessageOn] = useState(false)
+    const [message, setMessage] = useState('Something went wrong. Please try again')
 
     useEffect(() => {
         if(isChanged)
@@ -35,6 +38,10 @@ const StockManagement = () => {
             .then(res => {
                 setIsLoading(false)
                 if(res) history.push('/')
+                else{
+                    setMessage('You can\'t close your shop since your items have sold.')
+                    setIsMessageOn(true)
+                }
             })
     }
 
@@ -58,6 +65,7 @@ const StockManagement = () => {
             >Close This Shop</div>
         </div>
         {isModalOn && <ItemModify setIsModalOn={setIsModalOn} setIsChanged={setIsChanged} />}
+        {isMessageOn && <Message setIsMessageOn={setIsMessageOn} isError={true} message={message} />}
         {isLoading && <Placeholder width='100vw' height='100vh' position='fixed' />}
     </>)
 }

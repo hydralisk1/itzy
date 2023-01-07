@@ -63,7 +63,7 @@ def delete_shop():
         return {'message': 'successfully closed'}
 
     except:
-        return {'error': 'something went wrong'}, 500
+        return {'error': 'cannot close your shop'}, 406
 
 
 @shop_routes.route('/items', methods=['GET'])
