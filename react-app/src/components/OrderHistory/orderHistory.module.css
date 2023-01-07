@@ -68,3 +68,8 @@
 .cancelBtn:hover {
     background-color: rgb(34, 34, 34, 0.4);
 }
+
+.noOrder {
+    height: 350px;
+    font-size: 24px;
+}

@@ -84,7 +84,7 @@ const OrderHistory = () => {
             <div className={styles.cancelExplanation}>You can cancel items on preparing.</div>
             {
                 !Object.keys(data).length ?
-                <div>There's no order placed</div> :
+                <div className={styles.noOrder}>No order placed yet</div> :
                 Object.keys(data).sort((a, b) => b - a).map((orderNum, i) =>
                     <div key={orderNum + orderNum} style={{marginBottom: '2rem', padding: '16px 0',borderBottom: '1px solid rgb(0, 0, 0, 0.4)'}}>
                         <div key={orderNum} className={styles.orderNum}>Order# {orderNum}</div>
