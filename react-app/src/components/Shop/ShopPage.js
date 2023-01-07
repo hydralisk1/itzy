@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 // import { useSelector } from 'react-redux'
 import StockManagement from './StockManagement'
+import Placeholder from '../Placeholder'
 import styles from './shop.module.css'
 import orderStyles from '../Purchase/purchase.module.css'
 
@@ -9,14 +10,19 @@ const ShopPage = () => {
     const [editShopName, setEditShopName] = useState('')
     const [nameError, setNameError] = useState('')
     const [edit, setEdit] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
+        setIsLoading(true)
         fetch('/api/shop/')
             .then(res => {
                 if(res.ok) return res.json()
                 throw new Error()
             })
-            .then(res => setShopName(res.name))
+            .then(res => {
+                setShopName(res.name)
+                setIsLoading(false)
+            })
             .catch(err => console.log(err))
     }, [])
 
@@ -62,7 +68,7 @@ const ShopPage = () => {
         }
     }
 
-    return (
+    return (<>
         <div className={orderStyles.contentContainer}>
             <div className={styles.displayFlex}>
                 {edit ?
@@ -99,7 +105,8 @@ const ShopPage = () => {
             }
             <StockManagement />
         </div>
-    )
+        {isLoading && <Placeholder width='100vw' height='100vh' position='fixed' />}
+    </>)
 }
 
 export default ShopPage

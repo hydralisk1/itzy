@@ -1,15 +1,21 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import ItemModify from '../ItemPage/ItemModify'
+import Placeholder from '../Placeholder'
 import styles from './shop.module.css'
 
 const Item = ({ item, setIsChanged }) => {
     const history = useHistory()
     const [isModalOn, setIsModalOn] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleDelete = () => {
+        setIsLoading(true)
         fetch(`/api/items/${item.id}`, {method: 'DELETE'})
-            .then(res => {if(res.ok) setIsChanged(true)})
+            .then(res => {
+                if(res.ok) setIsChanged(true)
+                setIsLoading(false)
+            })
     }
 
     return (<>
@@ -52,6 +58,7 @@ const Item = ({ item, setIsChanged }) => {
             </div>
         </div>
         { isModalOn && <ItemModify setIsChanged={setIsChanged} setIsModalOn={setIsModalOn} item={item} />}
+        {isLoading && <Placeholder width='100vw' height='100vh' position='fixed' />}
     </>)
 }
 

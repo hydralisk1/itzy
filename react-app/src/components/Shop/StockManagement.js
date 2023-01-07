@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { closeShop } from '../../store/session'
 import Item from './Item'
 import ItemModify from '../ItemPage/ItemModify'
+import Placeholder from '../Placeholder'
 import itemStyles from '../ItemPage/item.module.css'
 import styles from './shop.module.css'
 
@@ -15,6 +16,7 @@ const StockManagement = () => {
     const [items, setItems] = useState([])
     const [isChanged, setIsChanged] = useState(true)
     const [isModalOn, setIsModalOn] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         if(isChanged)
@@ -28,8 +30,12 @@ const StockManagement = () => {
     }, [isChanged])
 
     const handleClose = () => {
+        setIsLoading(true)
         dispatch(closeShop())
-            .then(res => {if(res) history.push('/')})
+            .then(res => {
+                setIsLoading(false)
+                if(res) history.push('/')
+            })
     }
 
     return (<>
@@ -52,6 +58,7 @@ const StockManagement = () => {
             >Close This Shop</div>
         </div>
         {isModalOn && <ItemModify setIsModalOn={setIsModalOn} setIsChanged={setIsChanged} />}
+        {isLoading && <Placeholder width='100vw' height='100vh' position='fixed' />}
     </>)
 }
 

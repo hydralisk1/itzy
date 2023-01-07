@@ -1,6 +1,10 @@
 from .db import db, SCHEMA, environment, add_prefix_for_prod
 from ..enums.receiving import Receiving
 from datetime import datetime
+from werkzeug.datastructures import FileStorage
+
+import os
+import boto3
 
 class Item(db.Model):
     __tablename__ = 'items'
@@ -31,7 +35,7 @@ class Item(db.Model):
     def get_all_items():
         res = []
 
-        for item in Item.query.all():
+        for item in Item.query.order_by(Item.id.desc()).all():
             stock = sum(i.qty if i.receiving == Receiving.receive else -i.qty for i in item.storages)
             if stock > 0:
                 res.append({ 'id':item.id, 'image': item.primary_image, 'price': item.price })
@@ -72,3 +76,18 @@ class Item(db.Model):
             'desc': self.desc,
             'images': [self.primary_image, self.video, self.secondary_image]
         }
+
+    def delete_item_files(self):
+        s3 = boto3.client(
+            's3',
+            region_name = os.environ.get('S3_REGION'),
+            aws_access_key_id = os.environ.get('S3_KEY'),
+            aws_secret_access_key = os.environ.get('S3_SECRET')
+        )
+
+        keys = [{'Key': filename.split('amazonaws.com/')[1]} for filename in [self.primary_image, self.secondary_image, self.video] if filename]
+
+        s3.delete_objects(
+            Bucket = os.environ.get('S3_BUCKET'),
+            Delete={'Objects': keys}
+        )

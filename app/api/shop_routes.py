@@ -53,6 +53,10 @@ def get_shop_info():
 def delete_shop():
     try:
         my_shop = current_user.shop[0]
+
+        for item in my_shop.items:
+            item.delete_item_files()
+
         db.session.delete(my_shop)
         db.session.commit()
 
