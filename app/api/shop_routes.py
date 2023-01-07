@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
-from app.models import Shop, db
+from app.models import Shop, Item, db
 
 shop_routes = Blueprint('shop', __name__)
 
@@ -53,16 +53,17 @@ def get_shop_info():
 def delete_shop():
     try:
         my_shop = current_user.shop[0]
-
-        for item in my_shop.items:
-            item.delete_item_files()
+        filenames = [[item.primary_image, item.secondary_image, item.video] for item in my_shop.items]
 
         db.session.delete(my_shop)
         db.session.commit()
 
+        for files in filenames:
+            Item.delete_item_files(files)
+
         return {'message': 'successfully closed'}
 
-    except:
+    except Exception as e:
         return {'error': 'cannot close your shop'}, 406
 
 
