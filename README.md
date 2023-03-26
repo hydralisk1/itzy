@@ -5,6 +5,7 @@ This project is a fully-functional web application that allows users to buy and 
 
 
 
+
 <!-- ## Table of Contents
 * [MVP Feature List]()
 * [Database Schema]()
